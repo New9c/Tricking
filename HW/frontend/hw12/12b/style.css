@@ -1,0 +1,18 @@
+.flexer {
+	display: flex;
+}
+
+.first {
+	width: 50px;
+	background-color: rgb(230, 230, 255);
+}
+
+.third {
+	width: 75px;
+	background-color: rgb(230, 230, 255);
+}
+
+.second {
+	flex: 1;
+	background-color: rgb(255, 230, 230);
+}

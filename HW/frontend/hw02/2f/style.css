@@ -1,0 +1,34 @@
+.back {
+	color: rgb(0, 113, 133);
+}
+
+.title {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.price {
+	color: rgb(0, 118, 0);
+}
+
+.add {
+	background-color: rgb(255, 216, 20);
+	color: rgb(0, 0, 0);
+	border: none;
+	height: 40px;
+	width: 100px;
+	font-weight: bold;
+	border-radius: 18px;
+	margin-left: 8px;
+}
+
+.buy {
+	background-color: rgb(255, 164, 28);
+	color: rgb(0, 0, 0);
+	border: none;
+	height: 40px;
+	width: 100px;
+	font-weight: bold;
+	border-radius: 18px;
+	margin-left: 8px;
+}

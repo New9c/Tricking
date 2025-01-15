@@ -1,0 +1,14 @@
+div {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	column-gap: 20px;
+	row-gap: 10px;
+}
+
+.blue {
+	background-color: rgb(230, 230, 255);
+}
+
+.pink {
+	background-color: rgb(255, 230, 230);
+}

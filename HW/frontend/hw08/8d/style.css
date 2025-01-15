@@ -1,0 +1,32 @@
+body {
+	background: rgb(30, 30, 30);
+}
+
+button {
+	margin: 5px 2px;
+	height: 60px;
+	width: 445px;
+	border-radius: 15px;
+	border-style: none;
+	background-color: rgb(10, 102, 194);
+	color: rgb(255, 255, 255);
+	font-size: 24px;
+}
+
+.first {
+	display: inline-block;
+	border-style: none;
+	width: 200px;
+	padding: 5px 10px;
+	margin: 5px 2px;
+	font-size: 15px;
+}
+
+.email {
+	display: block;
+	border-style: none;
+	width: 429px;
+	padding: 5px 10px;
+	margin: 5px 2px;
+	font-size: 15px;
+}

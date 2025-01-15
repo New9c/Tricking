@@ -1,0 +1,35 @@
+body {
+	display: flex;
+	font-family: "Roboto", sans-serif;
+	vertical-align: middle;
+}
+
+.me {
+	width: 30px;
+	border-radius: 15px;
+	margin-left: 10px;
+}
+
+.search-bar {
+	height: 30px;
+	width: 370px;
+	border-style: none;
+	padding: 1px 10px;
+	margin-left: 10px;
+}
+
+.search-bar:focus {
+	outline: none;
+	border: none;
+}
+
+button {
+	border-radius: 20px;
+	border-style: none;
+	padding: 5px 5px;
+	background-color: rgb(50, 122, 194);
+	color: rgb(255, 255, 255);
+	font-size: 15px;
+	font-weight: bold;
+	margin-left: 10px;
+}

@@ -1,0 +1,44 @@
+body {
+	display: flex;
+	font-family: "Roboto", sans-serif;
+}
+
+.me {
+	height: 50px;
+	width: 50px;
+	border-radius: 25px;
+}
+
+.flexer {
+	height: 50px;
+	padding: 10px 10px;
+}
+
+.virus {
+	margin: 10px 0px;
+	display: flex;
+	height: 200px;
+	width: 300px;
+	box-shadow: 0px 0px 2px;
+	border-radius: 5px;
+}
+
+.gr {
+	background-color: gray;
+	height: 200px;
+	width: 100px;
+}
+
+.text_in_box {
+	display: flex;
+	text-align: center;
+	align-items: center;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.gray {
+	color: gray;
+}

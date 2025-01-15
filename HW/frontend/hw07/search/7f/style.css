@@ -1,0 +1,23 @@
+body {
+	font-family: "Roboto", sans-serif;
+}
+
+p {
+	color: rgb(70, 70, 70);
+}
+
+.search-bar {
+	height: 30px;
+	width: 370px;
+	padding: 1px 10px;
+}
+
+button {
+	height: 60px;
+	width: 390px;
+	border-radius: 30px;
+	border-style: none;
+	background-color: rgb(10, 102, 194);
+	color: rgb(255, 255, 255);
+	font-size: 24px;
+}

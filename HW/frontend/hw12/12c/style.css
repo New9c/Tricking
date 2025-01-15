@@ -1,0 +1,20 @@
+.flexer {
+	display: flex;
+	justify-content: space-between;
+}
+
+.first {
+	background-color: rgb(255, 230, 230);
+}
+
+.third {
+	background-color: rgb(255, 230, 230);
+}
+
+.second {
+	background-color: rgb(255, 230, 230);
+}
+
+.fourth {
+	background-color: rgb(255, 230, 230);
+}

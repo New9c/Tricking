@@ -1,0 +1,23 @@
+.flexer {
+	display: flex;
+}
+
+.first {
+	display: flex;
+	width: 100px;
+	height: 70px;
+	background-color: rgb(230, 230, 255);
+	justify-content: center;
+	align-items: center;
+}
+
+.second {
+	width: 200px;
+	height: 70px;
+	background-color: rgb(255, 230, 230);
+}
+
+.item {
+	background-color: rgb(0, 0, 0);
+	color: rgb(255, 255, 255);
+}
