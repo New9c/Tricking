@@ -1,8 +1,8 @@
 from enum import Enum
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import HTTPException
 from datetime import datetime, timedelta, timezone
-from jose import JWTError, jwt
+from jose import jwt
 from models import User
 from passlib.context import CryptContext
 
@@ -28,7 +28,7 @@ def _fetch_db_user(db, username, pwd)-> User:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     return db_user
 
-def _create_access_token(data: dict):
+def _create_access_token(data: dict) -> str:
     to_encode = data.copy()
     expire_time = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire_time})
@@ -36,7 +36,7 @@ def _create_access_token(data: dict):
     return access_token
 
 
-def login(username: str, pwd: str, db: Session):
+def login(username: str, pwd: str, db: Session) -> dict[str, str]:
     db_user = _fetch_db_user(db, username, pwd)
     access_token = _create_access_token(data={"sub": db_user.username})
     return {"access_token": access_token, "token_type": "bearer"}
