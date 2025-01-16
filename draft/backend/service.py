@@ -35,6 +35,11 @@ def _create_access_token(data: dict) -> str:
     access_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return access_token
 
+def fetch_user(uid: str, db: Session) -> dict:
+    user = db.query(User).filter(User.uid == uid).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail=f"User with uid '{uid}' not found")
+    return user
 
 def login(username: str, pwd: str, db: Session) -> dict[str, str]:
     db_user = _fetch_db_user(db, username, pwd)
@@ -77,3 +82,53 @@ def register_user(
     db.commit()
     db.refresh(new_user)
     return new_user.to_dict()
+
+
+def update_user(
+        uid: str,
+        username: str|None, 
+        pwd: str|None, 
+        email: str|None,
+        phone_num: str|None,
+        age: int|None,
+        gender: Enum|None,
+        db: Session,
+    ):
+    """
+    Will try to update a user using a uid.
+    Fails if the username, email or phone number is taken.
+    Also fails if the uid can't be found in the database.
+    """
+    same_name_user = db.query(User).filter(User.username == username).first()
+    if same_name_user != None:
+        raise HTTPException(status_code=400, detail="Username already exists")
+    same_email_user = db.query(User).filter(User.email == email).first()
+    if same_email_user != None:
+        raise HTTPException(status_code=400, detail="Email already exists")
+    same_phone_user = db.query(User).filter(User.phone_num == phone_num).first()
+    if same_phone_user != None:
+        raise HTTPException(status_code=400, detail="Phone number already exists")
+
+    user = db.query(User).filter(User.uid == uid).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail=f"User with uid '{uid}' not found")
+    if username!=None:
+        user.username = username
+    if pwd!=None:
+        user.hashed_pwd= _hash_pwd(pwd)
+    if email!=None:
+        user.email = email
+    if phone_num!=None:
+        user.phone_num = phone_num
+    if age!=None:
+        user.age = age
+    if gender!=None:
+        user.gender = gender
+    db.commit()
+
+def delete_user(uid: str, db: Session):
+    user_to_delete = db.query(User).filter(User.uid == uid).first()
+    if user_to_delete is None:
+        raise HTTPException(status_code=404, detail=f"User with uid '{uid}' not found")
+    db.delete(user_to_delete)
+    db.commit()
