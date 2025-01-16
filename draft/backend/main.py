@@ -42,8 +42,8 @@ def update_user(
     return {"status_code": 200}
 
 @app.post("/login", responses=core_responses)
-def login(username: str, password: str, db: Session = Depends(get_db)):
-    service.login(username, password, db)
+def login(account: str, password: str, db: Session = Depends(get_db)):
+    service.login(account, password, db)
     return {"status_code": 200}
 
 @app.post("/delete", responses=core_responses)

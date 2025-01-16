@@ -19,14 +19,59 @@ def _hash_pwd(original_pwd: str) -> str:
 def _verify_pwd(checked_pwd: str, hashed_pwd: str)-> bool:
     return _pwd_context.verify(checked_pwd, hashed_pwd)
 
-def _db_user_not_valid(db_user, pwd: str)-> bool:
-    return db_user is None or not _verify_pwd(pwd, db_user.hashed_pwd)
+def _verify_age(age: int|None)-> bool:
+    if age==None:
+        return True
+    if 0<=age<=200:
+        return True
+    return False
 
-def _fetch_db_user(db, username, pwd)-> User:
-    db_user = db.query(User).filter(User.username == username).first()
-    if _db_user_not_valid(db_user, pwd):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-    return db_user
+def _verify_username(username: str|None)-> bool:
+    if username==None:
+        return True
+    for c in username:
+        if c=='@':
+            return False
+    return True
+
+def _verify_email(email: str|None)-> bool:
+    if email==None:
+        return True
+    for c in email:
+        if c=='@':
+            return True
+    return False
+
+def _verify_phone(phone: str|None)-> bool:
+    if phone==None:
+        return True
+    for c in phone:
+        if ord(c)>ord('9') or ord(c)<ord('0'):
+            return False
+    return True
+
+def _check_for_same_user(username, email, phone_num, db):
+    same_name_user = db.query(User).filter(User.username == username).first()
+    if same_name_user != None:
+        raise HTTPException(status_code=400, detail="Username already exists")
+    same_email_user = db.query(User).filter(User.email == email).first()
+    if same_email_user != None:
+        raise HTTPException(status_code=400, detail="Email already exists")
+    same_phone_user = db.query(User).filter(User.phone_num == phone_num).first()
+    if same_phone_user != None:
+        raise HTTPException(status_code=400, detail="Phone number already exists")
+
+def _verify_params(
+        username: str|None, 
+        email: str|None,
+        phone_num: str|None,
+        age: int|None,
+        db: Session,
+    ):
+    if not _verify_username(username) or not _verify_age(age) or not _verify_email(email) or not _verify_phone(phone_num):
+        raise HTTPException(status_code=401, detail="Invalid Parameters")
+    _check_for_same_user(username, email, phone_num, db)
+
 
 def _create_access_token(data: dict) -> str:
     to_encode = data.copy()
@@ -41,9 +86,20 @@ def fetch_user(uid: str, db: Session) -> dict:
         raise HTTPException(status_code=404, detail=f"User with uid '{uid}' not found")
     return user
 
-def login(username: str, pwd: str, db: Session) -> dict[str, str]:
-    db_user = _fetch_db_user(db, username, pwd)
-    access_token = _create_access_token(data={"sub": db_user.username})
+def _fetch_login_user(db, account, pwd)-> User:
+    db_user = db.query(User).filter(User.username == account).first()
+    if db_user==None:
+        db_user = db.query(User).filter(User.email== account).first()
+    if db_user==None:
+        db_user = db.query(User).filter(User.phone_num== account).first()
+
+    if db_user==None or not _verify_pwd(pwd, db_user.hashed_pwd):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    return db_user
+
+def login(account: str, pwd: str, db: Session) -> dict[str, str]:
+    login_user = _fetch_login_user(db, account, pwd)
+    access_token = _create_access_token(data={"sub": login_user.username})
     return {"access_token": access_token, "token_type": "bearer"}
 
 def register_user(
@@ -59,15 +115,7 @@ def register_user(
     Will try to register a user using a username, pwd and a database.
     Fails if the username, email or phone number is taken.
     """
-    same_name_user = db.query(User).filter(User.username == username).first()
-    if same_name_user != None:
-        raise HTTPException(status_code=400, detail="Username already exists")
-    same_email_user = db.query(User).filter(User.email == email).first()
-    if same_email_user != None:
-        raise HTTPException(status_code=400, detail="Email already exists")
-    same_phone_user = db.query(User).filter(User.phone_num == phone_num).first()
-    if same_phone_user != None:
-        raise HTTPException(status_code=400, detail="Phone number already exists")
+    _verify_params(username, email, phone_num, age, db)
 
     hashed_pwd = _hash_pwd(pwd)
     new_user = User(
@@ -99,15 +147,7 @@ def update_user(
     Fails if the username, email or phone number is taken.
     Also fails if the uid can't be found in the database.
     """
-    same_name_user = db.query(User).filter(User.username == username).first()
-    if same_name_user != None:
-        raise HTTPException(status_code=400, detail="Username already exists")
-    same_email_user = db.query(User).filter(User.email == email).first()
-    if same_email_user != None:
-        raise HTTPException(status_code=400, detail="Email already exists")
-    same_phone_user = db.query(User).filter(User.phone_num == phone_num).first()
-    if same_phone_user != None:
-        raise HTTPException(status_code=400, detail="Phone number already exists")
+    _verify_params(username, email, phone_num, age, db)
 
     user = db.query(User).filter(User.uid == uid).first()
     if user is None:
