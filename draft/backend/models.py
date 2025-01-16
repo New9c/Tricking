@@ -9,7 +9,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True, index=True, nullable=False)
-    hashed_password = Column(String(50), nullable=False)
+    hashed_pwd = Column(String(50), nullable=False)
 
 
 Base.metadata.create_all(engine)

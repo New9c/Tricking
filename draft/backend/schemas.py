@@ -6,7 +6,7 @@ class UserCreate(BaseModel):
 
 class UserResponse(BaseModel):
     username: str
-    hashed_password: str
+    hashed_pwd: str
 
     class Config:
         orm_mode = True
