@@ -8,9 +8,9 @@ import service
 
 core_responses: Dict = {
     200: {"description": "Success"},
-    400: {"description": "User Already Existant"},
+    400: {"description": "User Already Exists"},
     401: {"description": "Invalid Credentials"},
-    404: {"description": "User Not Found."},
+    404: {"description": "User Not Found"},
 }
 app = FastAPI()
 
