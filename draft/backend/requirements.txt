@@ -1,5 +1,5 @@
 fastapi==0.103.0
-sqlalchemy==2.1.0
+sqlalchemy==2.0.37
 passlib[bcrypt]==1.7.4
 uvicorn==0.23.0
 python-jose==3.3.0

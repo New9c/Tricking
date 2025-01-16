@@ -1,3 +1,4 @@
+from enum import Enum
 from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends, HTTPException, status
 from datetime import datetime, timedelta, timezone
@@ -14,10 +15,11 @@ _pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def _hash_pwd(original_pwd: str) -> str:
     return _pwd_context.hash(original_pwd)
-def _verify_pwd(checked_pwd: str, hashed_pwd: str):
+
+def _verify_pwd(checked_pwd: str, hashed_pwd: str)-> bool:
     return _pwd_context.verify(checked_pwd, hashed_pwd)
 
-def _db_user_not_valid(db_user, pwd: str):
+def _db_user_not_valid(db_user, pwd: str)-> bool:
     return db_user is None or not _verify_pwd(pwd, db_user.hashed_pwd)
 
 def _fetch_db_user(db, username, pwd)-> User:
@@ -39,17 +41,39 @@ def login(username: str, pwd: str, db: Session):
     access_token = _create_access_token(data={"sub": db_user.username})
     return {"access_token": access_token, "token_type": "bearer"}
 
-def register_user(username: str, pwd: str, db: Session) -> User:
+def register_user(
+        username: str, 
+        pwd: str, 
+        email: str,
+        phone_num: str,
+        age: int,
+        gender: Enum,
+        db: Session,
+    ) -> dict:
     """
     Will try to register a user using a username, pwd and a database.
-    Fails if the username is taken.
+    Fails if the username, email or phone number is taken.
     """
     same_name_user = db.query(User).filter(User.username == username).first()
     if same_name_user != None:
         raise HTTPException(status_code=400, detail="Username already exists")
+    same_email_user = db.query(User).filter(User.email == email).first()
+    if same_email_user != None:
+        raise HTTPException(status_code=400, detail="Email already exists")
+    same_phone_user = db.query(User).filter(User.phone_num == phone_num).first()
+    if same_phone_user != None:
+        raise HTTPException(status_code=400, detail="Phone number already exists")
+
     hashed_pwd = _hash_pwd(pwd)
-    new_user = User(username=username, hashed_pwd=hashed_pwd)
+    new_user = User(
+        username=username, 
+        hashed_pwd=hashed_pwd,
+        email=email,
+        phone_num=phone_num,
+        age=age,
+        gender=gender
+    )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    return new_user
+    return new_user.to_dict()

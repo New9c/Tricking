@@ -1,8 +1,9 @@
 from pydantic import BaseModel
+from enum import Enum
 
-class UserCreate(BaseModel):
-    username: str
-    password: str
+class Gender(str, Enum):
+    MALE = "Male"
+    FEMALE = "Female"
 
 class UserResponse(BaseModel):
     username: str
