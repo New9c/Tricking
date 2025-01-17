@@ -124,11 +124,11 @@ def update_user(user: UserUpdate, collection: Collection):
         user.age = age
     if gender!=None:
         user.gender = gender
+"""
 
 def delete_user(account: str, collection: Collection):
-    user_to_delete = db.query(User).filter(User.uid == uid).first()
-    if user_to_delete is None:
-        raise HTTPException(status_code=404, detail=f"User with uid '{uid}' not found")
-    db.delete(user_to_delete)
-    db.commit()
-"""
+    user_to_delete= _fetch_user(account, account, account, collection)
+
+    if user_to_delete==None:
+        raise HTTPException(status_code=404, detail="User Not Found")
+    collection.delete_one({"username": user_to_delete["username"]})
