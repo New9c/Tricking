@@ -42,8 +42,7 @@ def login(user: UserLogin):
 def delete_user(account: str):
     service.delete_user(account, users_collection)
     return {"status_code": 200}
-
+"""
 @app.get("/get", responses=core_responses)
 def fetch_user(account: str):
     return service.fetch_user(account, users_collection)
-"""

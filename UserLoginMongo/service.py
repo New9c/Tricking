@@ -50,7 +50,7 @@ def _verify_phone(phone: str|None)-> bool:
             return False
     return True
 
-def _verify_params(user: UserCreate|UserUpdate, collection: Collection):
+def _verify_params(user: UserCreate|UserUpdate):
     if not _verify_username(user.username) or not _verify_age(user.age) or not _verify_email(user.email) or not _verify_phone(user.phone):
         raise HTTPException(status_code=401, detail="Invalid Parameters")
 
@@ -62,7 +62,7 @@ def _create_access_token(data: dict) -> str:
     access_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return access_token
 
-def fetch_user(check_username, check_email, check_phone, collection: Collection):
+def _fetch_user(check_username, check_email, check_phone, collection: Collection):
     user = collection.find_one({"username": check_username})
     if user==None:
         user = collection.find_one({"email": check_email})
@@ -70,9 +70,16 @@ def fetch_user(check_username, check_email, check_phone, collection: Collection)
         user = collection.find_one({"phone": check_phone})
     return user
 
+def fetch_user(account, collection: Collection):
+    user = _fetch_user(account, account, account, collection)
+    if user==None:
+        raise HTTPException(status_code=404, detail="User Not Found")
+    user.pop("_id")
+    return user
+
 def login(user: UserLogin, collection: Collection):
     # check username, email and phone with account
-    login_user = fetch_user(user.account, user.account, user.account, collection)
+    login_user = _fetch_user(user.account, user.account, user.account, collection)
 
     if login_user==None:
         raise HTTPException(status_code=404, detail="No User Found")
@@ -86,9 +93,9 @@ def register_user(user: UserCreate, collection: Collection):
     Will try to register a user using a UserCreate class and a database.
     Fails if the username, email or phone number is taken.
     """
-    if fetch_user(user.username, user.email, user.phone, collection)!=None:
+    if _fetch_user(user.username, user.email, user.phone, collection)!=None:
         raise HTTPException(status_code=400, detail="User Already Exists")
-    _verify_params(user, collection)
+    _verify_params(user)
 
     user.password = _hash_pwd(user.password)
     collection.insert_one(user.model_dump())
