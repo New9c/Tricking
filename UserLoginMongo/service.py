@@ -82,7 +82,7 @@ def login(user: UserLogin, collection: Collection):
     login_user = _fetch_user(user.account, user.account, user.account, collection)
 
     if login_user==None:
-        raise HTTPException(status_code=404, detail="No User Found")
+        raise HTTPException(status_code=404, detail="User Not Found")
     if not _verify_pwd(user.password, login_user["password"]):
         raise HTTPException(status_code=401, detail="Password Invalid")
     access_token = _create_access_token(data={"sub": login_user["username"]})
@@ -100,31 +100,23 @@ def register_user(user: UserCreate, collection: Collection):
     user.password = _hash_pwd(user.password)
     collection.insert_one(user.model_dump())
 
-"""
-def update_user(user: UserUpdate, collection: Collection):
-    "
-    Will try to update a user using a uid.
-    Fails if the username, email or phone number is taken.
-    Also fails if the uid can't be found in the database.
-    "
-    _verify_params(user, collection)
+def update_user(username:str, user: UserUpdate, collection: Collection):
+    """
+    Will try to update a user using a username.
+    """
+    _verify_params(user)
 
-    user = db.query(User).filter(User.uid == uid).first()
-    if user is None:
-        raise HTTPException(status_code=404, detail=f"User with uid '{uid}' not found")
-    if username!=None:
-        user.username = username
-    if pwd!=None:
-        user.hashed_pwd= _hash_pwd(pwd)
-    if email!=None:
-        user.email = email
-    if phone!=None:
-        user.phone = phone
-    if age!=None:
-        user.age = age
-    if gender!=None:
-        user.gender = gender
-"""
+    update_data = {key: value for key, value in user.model_dump().items() if value!=None}
+    if "password" in update_data:
+        update_data["password"] = _hash_pwd(update_data["password"])
+    if update_data:
+        user_to_update  = collection.update_one({"username": username}, {"$set": update_data})
+        if user_to_update.modified_count == 0:
+            raise HTTPException(status_code=404, detail="User Not Found")
+        else:
+            return {"status_code": 200}
+    else:
+        return {"status_code": 200, "msg": "No Data Updated"}
 
 def delete_user(account: str, collection: Collection):
     user_to_delete= _fetch_user(account, account, account, collection)

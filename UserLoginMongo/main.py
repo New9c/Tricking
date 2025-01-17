@@ -25,12 +25,9 @@ app = FastAPI(prefix="/api/v1/")
 def register_user(user: UserCreate) -> dict:
     service.register_user(user, users_collection)
     return {"status_code": 200}
-"""
 @app.post("/update", responses=core_responses)
-def update_user(user: UserUpdate) -> dict:
-    service.update_user(user, users_collection)
-    return {"status_code": 200}
-"""
+def update_user(username: str, user: UserUpdate) -> dict:
+    return service.update_user(username, user, users_collection)
 
 @app.post("/login", responses=core_responses)
 def login(user: UserLogin):
