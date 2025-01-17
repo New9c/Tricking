@@ -5,11 +5,7 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
 from schemas import Gender, User, UserCreate, UserUpdate, UserLogin
-
-# JWT Configuration
-SECRET_KEY = "877a59a92dfc5aac378061e6c5fdd1a677881514fb28677a621d613c05883a05"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+from config import config
 
 _pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -57,9 +53,9 @@ def _verify_params(user: UserCreate|UserUpdate):
 
 def _create_access_token(data: dict) -> str:
     to_encode = data.copy()
-    expire_time = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire_time = datetime.now(timezone.utc) + timedelta(minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire_time})
-    access_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    access_token = jwt.encode(to_encode, key=config.SECRET_JWT, algorithm=config.ALGORITHM)
     return access_token
 
 def _fetch_user(check_username, check_email, check_phone, collection: Collection):

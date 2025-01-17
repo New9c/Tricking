@@ -3,11 +3,10 @@ from fastapi import FastAPI
 from pymongo import MongoClient
 
 from schemas import Gender, User, UserCreate, UserLogin, UserUpdate
+from config import config
 import service
 
-PWD = "2G1ix1hjDHtvn2Qt"
-uri= f"mongodb+srv://aimccccccccc:{PWD}@clusterfluster.jzaut.mongodb.net/?retryWrites=true&w=majority&appName=ClusterFluster"
-
+uri = f"mongodb+srv://aimccccccccc:{config.PASSWORD}@clusterfluster.jzaut.mongodb.net/?retryWrites=true&w=majority&appName=ClusterFluster"
 # 連接 MongoDB
 client = MongoClient(uri)
 db = client["ncku_tricking_db"] # 你的資料庫名稱
