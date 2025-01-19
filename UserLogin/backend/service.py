@@ -1,6 +1,6 @@
 from enum import Enum
 from pymongo.collection import Collection
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException
 from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
@@ -26,7 +26,7 @@ def _verify_username(username: str|None)-> bool:
     if username==None:
         return True
     for c in username:
-        if c=='@':
+        if c=='@' or c==' ':
             return False
     return True
 
@@ -66,8 +66,8 @@ def _fetch_user(check_username, check_email, check_phone, collection: Collection
         user = collection.find_one({"phone": check_phone})
     return user
 
-def fetch_user(account, collection: Collection):
-    user = _fetch_user(account, account, account, collection)
+def fetch_user(username, collection: Collection):
+    user = collection.find_one({"username": username})
     if user==None:
         raise HTTPException(status_code=404, detail="User Not Found")
     user.pop("_id")
@@ -82,7 +82,7 @@ def login(user: UserLogin, collection: Collection):
     if not _verify_pwd(user.password, login_user["password"]):
         raise HTTPException(status_code=401, detail="Password Invalid")
     access_token = _create_access_token(data={"sub": login_user["username"]})
-    normal_ret = {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer"}
 
 def register_user(user: UserCreate, collection: Collection):
     """

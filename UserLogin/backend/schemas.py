@@ -3,8 +3,8 @@ from pydantic import BaseModel
 from typing import Optional
 
 class Gender(str, Enum):
-    MALE = "Male"
-    FEMALE = "Female"
+    MALE = "male"
+    FEMALE = "female"
 
 class User(BaseModel):
     username: str
