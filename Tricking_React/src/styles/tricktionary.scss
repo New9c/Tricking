@@ -1,0 +1,63 @@
+header {
+    font-family: "DM Serif Text", serif;
+    display: block;
+    padding: 10px;
+    margin: 20px;
+    background-color: rgb(0, 78, 222);
+    color: rgb(255, 255, 255);
+    letter-spacing: 1px;
+    border-radius: 5px;
+    font-size: 24px;
+}
+
+.multiple-tricks {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 20px;
+    letter-spacing: 1px;
+}
+
+.trick-btn {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 3px;
+    line-height: 50px;
+    font-size: 16px;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(0, 78, 222);
+    color: rgb(0, 0, 0);
+}
+
+.trick-btn:hover {
+    margin: 0px;
+    padding: 20px;
+    background-color: rgb(64, 161, 50);
+    font-weight: 800;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add_delete_container {
+    display: flex;
+    justify-content: center;
+}
+
+.add_delete {
+    font-size: 16px;
+    border: 1px solid rgb(0, 78, 222);
+    border-radius: 3px;
+    margin: 10px;
+    padding: 10px;
+    min-width: 20%;
+    line-height: 30px;
+    background: linear-gradient(135deg, rgb(77, 250, 52), rgb(255, 47, 47));
+}
+
+.add_delete:hover {
+    font-weight: 800;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}

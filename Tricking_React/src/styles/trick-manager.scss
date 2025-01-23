@@ -1,0 +1,76 @@
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: burlywood; */
+    padding-top: 10px;
+}
+
+.trick-manager-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(97, 53, 53);
+    box-shadow: 0px 0px 75px 0px rgba(0, 0, 0, 0.75);
+    padding: 80px 40px;
+    border-radius: 10px;
+}
+
+.title {
+    /* background-color: darkgray; */
+    margin-bottom: 80px;
+    color: white;
+    font-weight: 900;
+    font-size: 28px;
+}
+
+.field-input {
+    width: 270px;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.699);
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: white;
+}
+
+.field-input::placeholder {
+    color: rgba(226, 226, 226, 0.466);
+    font-size: 15px;
+}
+
+.field-input:focus {
+    outline: none;
+}
+
+.button-container {
+    display: flexbox;
+    justify-content: space-between;
+    /* background-color: darkgray; */
+    margin-top: 50px;
+}
+
+.action-btn {
+    color: rgb(97, 53, 53);
+    font-family: "Noto Sans TC";
+    font-size: 18px;
+    font-weight: 400;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background-color: rgb(97, 53, 53);
+    color: white;
+    border: 1px solid white;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.action-btn:active {
+    background-color: rgb(140, 77, 77);
+    color: white;
+    border: 1px solid white;
+}

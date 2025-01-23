@@ -1,0 +1,26 @@
+.logo {
+    display: flex;
+    align-items: center;
+    /* background-color: aquamarine; */
+    padding-top: 50px;
+    padding-left: 50px;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: black;
+    object-fit: cover;
+    margin-right: 5px;
+}
+
+.logo .club-name {
+    /* background-color: antiquewhite; */
+    font-family: "DM Serif Text", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+    color: rgb(239, 239, 239);
+    font-weight: 900;
+}

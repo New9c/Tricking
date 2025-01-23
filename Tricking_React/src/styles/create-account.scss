@@ -1,0 +1,138 @@
+.logo {
+    display: flex;
+    align-items: center;
+    padding-top: 50px;
+    padding-left: 50px;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: black;
+    object-fit: cover;
+    margin-right: 5px;
+}
+
+.logo .club-name {
+    font-family: "DM Serif Text", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+    color: rgb(239, 239, 239);
+    font-weight: 900;
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.create-account-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(97, 53, 53);
+    box-shadow: 0px 0px 75px 0px rgba(0, 0, 0, 0.75);
+    padding: 50px 80px;
+    border-radius: 10px;
+}
+
+.instruction {
+    color: white;
+    /* font-family: "Noto Sans TC"; */
+    font-size: 25px;
+    font-weight: 400;
+    margin-bottom: 50px;
+}
+
+.account-input {
+    width: 270px;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.699);
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: white;
+}
+
+.account-input::placeholder {
+    color: rgba(226, 226, 226, 0.466);
+    font-size: 15px;
+}
+
+.account-input:focus {
+    outline: none;
+}
+
+.sex-radio {
+    color: white;
+    /* font-family: "Noto Sans TC"; */
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+.sex-radio input {
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.submit-btn {
+    /* font-family: "Noto Sans TC"; */
+    font-size: 18px;
+    font-weight: 400;
+    padding: 5px 20px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: white;
+    color: rgb(97, 53, 53);
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: rgb(97, 53, 53);
+    color: white;
+    border: 1px solid white;
+}
+
+.submit-btn:active {
+    background-color: rgb(140, 77, 77);
+    color: white;
+    border: 1px solid white;
+}
+
+.back-to-login-btn {
+    /* font-family: "Noto Sans TC"; */
+    font-size: 18px;
+    font-weight: 400;
+    padding: 5px 20px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: white;
+    color: rgb(97, 53, 53);
+    margin-right: 20px; /* 增加與提交按鈕之間的間距 */
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.back-to-login-btn:hover {
+    background-color: rgb(97, 53, 53);
+    color: white;
+    border: 1px solid white;
+}
+
+.back-to-login-btn:active {
+    background-color: rgb(140, 77, 77);
+    color: white;
+    border: 1px solid white;
+}
