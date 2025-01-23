@@ -1,7 +1,8 @@
 from pymongo.collection import Collection
 from fastapi import HTTPException
-from schemas import TrickCreate, TrickDelete
 from collections import defaultdict
+
+from tricktionary.schemas import TrickCreate, TrickDelete
 
 def fetch_tricks(collection: Collection):
     tricks = collection.find()

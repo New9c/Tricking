@@ -1,13 +1,12 @@
 from typing import Dict
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import APIRouter
 from pymongo import MongoClient
 
-from schemas import TrickCreate, TrickDelete
-from config import config
-import service
+from tricktionary.schemas import TrickCreate, TrickDelete
+from tricktionary.config import config
+import tricktionary.service as service
 
-uri = f"mongodb+srv://aimccccccccc:{config.PASSWORD}@clusterfluster.jzaut.mongodb.net/?retryWrites=true&w=majority&appName=ClusterFluster"
+uri = f"mongodb+srv://aimccccccccc:{config.PASSWORD}@clusterfluster.jzaut.mongodb.net/?retryWrites=true&w=majority&routerName=ClusterFluster"
 # 連接 MongoDB
 client = MongoClient(uri)
 db = client["ncku_tricking_db"] # 你的資料庫名稱
@@ -22,27 +21,22 @@ core_responses: Dict = {
     403: {"description": "Access Denied"},
     404: {"description": "trick Not Found"},
 }
-app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Adjust for your frontend's URL
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+router = APIRouter(
+    prefix="/api/v1/tricktionary",
+    tags=["Tricktionary"]
 )
 
-
-@app.get("/api/v1/tricktionary/get", responses=core_responses)
+@router.get("/get", responses=core_responses)
 def fetch_tricks() -> dict:
     return service.fetch_tricks(tricks_collection)
 
-@app.post("/api/v1/tricktionary/add", responses=core_responses)
+@router.post("/add", responses=core_responses)
 def add_trick(trick: TrickCreate) -> dict:
     service.add_trick(trick, tricks_collection)
     return {"status_code": 200}
 
-@app.delete("/api/v1/tricktionary/delete", responses=core_responses)
+@router.delete("/delete", responses=core_responses)
 def delete_trick(trick: TrickDelete):
     service.delete_trick(trick, tricks_collection)
     return {"status_code": 200}

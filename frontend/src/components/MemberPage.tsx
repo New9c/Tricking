@@ -81,6 +81,10 @@ const MemberPage: React.FC = () => {
     // TODO: 將修改後的資料送回後端 API
     if (originalData == null)
       return
+    if (JSON.stringify(memberData) === JSON.stringify(originalData)) {
+      setIsEditing(false);
+      return;
+    }
     const { password, ...noPwdData } = memberData;
     const response = await fetch(`http://localhost:8000/api/v1/me?username=${encodeURIComponent(originalData.username)}`, {
       method: 'PUT',

@@ -6,6 +6,6 @@ To keep a backup of files regarding the tricking website.
 - made working backend with username+password
 
 ## TODO
-- [ ] make tricktionary
+- [x] make tricktionary
 - [ ] make topbar
 - [ ] make draft homepage

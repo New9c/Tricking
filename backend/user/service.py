@@ -5,8 +5,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
-from schemas import Gender, User, UserCreate, UserUpdate, UserLogin
-from config import config
+
+from user.schemas import Gender, User, UserCreate, UserUpdate, UserLogin
+from user.config import config
 
 _pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
