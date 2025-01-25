@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Logo from "./Logo";
 import '../styles/tricktionary.scss';
+import '../styles/global.scss';
+import Topbar from "./Topbar";
 
 interface TrickData {
   [level: string]: string[];
@@ -44,7 +45,7 @@ const Tricktionary: React.FC = () => {
 
   return (
     <>
-      <Logo />
+      <Topbar />
       <div className="add_delete_container">
         <button
           className="add_delete"

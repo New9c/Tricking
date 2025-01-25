@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import '../styles/create-account.scss';
 import '../styles/global.scss';
 import Logo from './Logo';
+import Topbar from './Topbar';
 
 const CreateAccountPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -45,7 +46,7 @@ const CreateAccountPage: React.FC = () => {
 
   return (
     <>
-      <Logo />
+      <Topbar />
       <div className="center-container">
         <div className="create-account-box">
           <div className="instruction">請輸入你的資訊</div>

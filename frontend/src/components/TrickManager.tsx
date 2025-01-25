@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Logo from "./Logo";
 import "../styles/trick-manager.scss";
+import Topbar from "./Topbar";
 function goToTricktionary() {
   window.location.href = '/tricktionary';
 }
@@ -60,7 +60,7 @@ const TrickManager: React.FC = () => {
 
   return (
     <>
-      <Logo />
+      <Topbar />
       <div className="center-container">
         <div className="trick-manager-box">
           <h1 className="title">Trick Manager</h1>

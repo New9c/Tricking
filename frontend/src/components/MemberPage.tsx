@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/member.scss';
 import '../styles/global.scss';
-import Logo from './Logo';
 import defaultAvatar from '../assets/default-avatar.svg';
 import cameraIcon from '../assets/camera.svg';
+import Topbar from './Topbar';
 
 interface MemberData {
   username: string;
@@ -116,7 +116,7 @@ const MemberPage: React.FC = () => {
 
   return (
     <>
-      <Logo />
+      <Topbar />
       <div className="profile-container">
         <div className="profile-box">
           <div className="profile-title">個人資料</div>

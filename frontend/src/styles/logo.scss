@@ -2,8 +2,7 @@
     display: flex;
     align-items: center;
     /* background-color: aquamarine; */
-    padding-top: 50px;
-    padding-left: 50px;
+    padding: 20px 30px;
 }
 
 .logo img {
@@ -17,6 +16,7 @@
 
 .logo .club-name {
     /* background-color: antiquewhite; */
+    margin-top: 7px;
     font-family: "DM Serif Text", serif;
     font-weight: 400;
     font-style: normal;

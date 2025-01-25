@@ -1,9 +1,8 @@
-// frontend/src/components/LoginPage.tsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/login.scss';
 import '../styles/global.scss';
-import Logo from './Logo';
+import Topbar from './Topbar';
 
 const LoginPage: React.FC = () => {
   const [account, setAccount] = useState('');
@@ -43,7 +42,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
-      <Logo />
+      <Topbar />
       <div className="center-container">
         <div className="login-box">
           <div className="welcome-title">Welcome to NCKU Tricking</div>
