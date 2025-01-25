@@ -86,9 +86,11 @@ const MemberPage: React.FC = () => {
       return;
     }
     const { password, ...noPwdData } = memberData;
-    const response = await fetch(`http://localhost:8000/api/v1/me?username=${encodeURIComponent(originalData.username)}`, {
+    const token = localStorage.getItem('access_token');
+    const response = await fetch("http://localhost:8000/api/v1/me", {
       method: 'PUT',
       headers: {
+        'Authorization': `Bearer ${token}`, // Add the token to the Authorization header
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(noPwdData),

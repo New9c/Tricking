@@ -41,10 +41,9 @@ const TrickManager: React.FC = () => {
         return;
       }
       try {
-        const response = await fetch(`http://localhost:8000/api/v1/tricktionary/delete`, {
+        const response = await fetch(`http://localhost:8000/api/v1/tricktionary/delete/${trickName}`, {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: trickName }),
         });
         if (response.ok) {
           setResponseMessage(`Trick '${trickName}' deleted successfully!`);
