@@ -1,25 +1,16 @@
 from typing import Dict
-from fastapi import APIRouter
-from pymongo import MongoClient
+from fastapi import APIRouter, Depends
 
 from tricktionary.schemas import TrickCreate, TrickDelete
-from tricktionary.config import config
 import tricktionary.service as service
-
-uri = f"mongodb+srv://aimccccccccc:{config.PASSWORD}@clusterfluster.jzaut.mongodb.net/?retryWrites=true&w=majority&routerName=ClusterFluster"
-# 連接 MongoDB
-client = MongoClient(uri)
-db = client["ncku_tricking_db"] # 你的資料庫名稱
-tricks_collection = db["tricks"] # 你的使用者集合名稱
-
-
+from dependencies import get_tricktionary_collection as get_collection
 
 core_responses: Dict = {
     200: {"description": "Success"},
-    400: {"description": "trick Already Exists"},
+    400: {"description": "Trick Already Exists"},
     401: {"description": "Invalid Credentials"},
     403: {"description": "Access Denied"},
-    404: {"description": "trick Not Found"},
+    404: {"description": "Trick Not Found"},
 }
 
 router = APIRouter(
@@ -28,15 +19,15 @@ router = APIRouter(
 )
 
 @router.get("/get", responses=core_responses)
-def fetch_tricks() -> dict:
+def fetch_tricks(tricks_collection = Depends(get_collection)) -> dict:
     return service.fetch_tricks(tricks_collection)
 
 @router.post("/add", responses=core_responses)
-def add_trick(trick: TrickCreate) -> dict:
+def add_trick(trick: TrickCreate, tricks_collection = Depends(get_collection)) -> dict:
     service.add_trick(trick, tricks_collection)
     return {"status_code": 200}
 
-@router.delete("/delete", responses=core_responses)
-def delete_trick(trick: TrickDelete):
+@router.delete("/delete/{trick}", responses=core_responses)
+def delete_trick(trick: str, tricks_collection = Depends(get_collection)):
     service.delete_trick(trick, tricks_collection)
     return {"status_code": 200}

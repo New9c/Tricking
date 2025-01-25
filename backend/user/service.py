@@ -1,13 +1,12 @@
-from enum import Enum
 from pymongo.collection import Collection
-from fastapi import Depends, HTTPException
+from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
 
-from user.schemas import Gender, User, UserCreate, UserUpdate, UserLogin
-from user.config import config
+from user.schemas import UserCreate, UserUpdate, UserLogin
+from config import config
 
 _pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
