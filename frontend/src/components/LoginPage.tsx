@@ -11,6 +11,11 @@ const LoginPage: React.FC = () => {
     text: "",
     color: "white",
   });
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
 
   const handleLogin = async () => {
     // TODO: 在這裡呼叫後端 API 進行登入驗證
@@ -58,6 +63,7 @@ const LoginPage: React.FC = () => {
             className="account-input"
             placeholder="Password"
             value={password}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setPassword(e.target.value)}
           />
           {responseMessage.text && (

@@ -18,6 +18,11 @@ const CreateAccountPage: React.FC = () => {
     color: "white",
   });
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
+  };
   const handleSubmit = async () => {
     // TODO: 在這裡呼叫後端 API 進行帳號創建
     setResponseMessage({ text: "Processing...", color: "white" });
@@ -102,6 +107,7 @@ const CreateAccountPage: React.FC = () => {
             className="account-input"
             placeholder="密碼"
             value={password}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setPassword(e.target.value)}
           />
           {responseMessage.text && (

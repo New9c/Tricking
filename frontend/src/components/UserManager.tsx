@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/login.scss';
+import '../styles/user_manager.scss';
 import '../styles/global.scss';
 import Topbar from './Topbar';
 
@@ -45,20 +45,13 @@ const UserManager: React.FC = () => {
       <Topbar />
       <div className="center-container">
         <div className="admin-box">
-          <div className="welcome-title">Admin Panel</div>
+          <div className="welcome-title">User Manager</div>
           <input
             type="text"
             className="account-input"
             placeholder="Username, phone or email"
             value={account}
             onChange={(e) => setAccount(e.target.value)}
-          />
-          <input
-            type="password"
-            className="account-input"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
           />
           {responseMessage.text && (
             <p style={{ color: responseMessage.color }}>
@@ -67,11 +60,8 @@ const UserManager: React.FC = () => {
           )}
           <div className="button-container">
             <button className="login-btn" onClick={handleLogin}>
-              登入
+              搜尋
             </button>
-            <Link to="/create-account">
-              <button className="create-account-btn">加入會員</button>
-            </Link>
           </div>
         </div>
       </div>

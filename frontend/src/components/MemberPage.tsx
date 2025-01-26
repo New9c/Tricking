@@ -134,6 +134,7 @@ const MemberPage: React.FC = () => {
       return;
     }
     localStorage.removeItem('access_token');
+    localStorage.removeItem('user_role');
     window.location.href = '/login';
   };
 
@@ -152,6 +153,13 @@ const MemberPage: React.FC = () => {
             </div>
           </div>
           <div className="add_delete_container">
+            {(localStorage.getItem('user_role') === 'admin') &&
+              <button
+                className="user_manager"
+                onClick={() => window.location.href = '/user_manager'}>
+                User Manager
+              </button>
+            }
             {(localStorage.getItem('user_role') !== 'student') &&
               <button
                 className="add_delete"
