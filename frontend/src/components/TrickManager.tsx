@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import "../styles/trick-manager.scss";
 import Topbar from "./Topbar";
-function goToTricktionary() {
-  window.location.href = '/tricktionary';
-}
 
 const TrickManager: React.FC = () => {
   const [mode, setMode] = useState<"add" | "delete">("add"); // Add or Delete mode
@@ -11,6 +8,15 @@ const TrickManager: React.FC = () => {
   const [trickLevel, setTrickLevel] = useState<string>(""); // Trick name input
   const [responseMessage, setResponseMessage] = useState<string>(""); // Feedback message
 
+  const token = localStorage.getItem('access_token');
+  const role = localStorage.getItem('user_role');
+  if (!token) {
+    alert('請先登入');
+    window.location.href = '/login';
+  } else if (role === 'student') {
+    alert('學生無法編輯Tricks');
+    window.location.href = '/tricktionary';
+  }
   const handleAction = async () => {
     if (mode === "add") {
       // Handle Add Trick
@@ -123,12 +129,6 @@ const TrickManager: React.FC = () => {
               onClick={handleAction}
             >
               {mode === "add" ? "Add Trick" : "Delete Trick"}
-            </button>
-            <button
-              className="action-btn"
-              onClick={goToTricktionary}
-            >
-              Go To Tricktionary
             </button>
           </div>
 

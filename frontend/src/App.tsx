@@ -6,6 +6,7 @@ import CreateAccountPage from './components/CreateAccountPage';
 import MemberPage from './components/MemberPage';
 import Tricktionary from './components/Tricktionary';
 import TrickManager from './components/TrickManager';
+import MainPage from './components/MainPage';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="/member" element={<MemberPage />} />
         <Route path="/tricktionary" element={<Tricktionary />} />
-        <Route path="/" element={<Tricktionary />} />
+        <Route path="/" element={<MainPage />} />
         <Route path="/trick_manager" element={<TrickManager />} />
       </Routes>
     </Router>

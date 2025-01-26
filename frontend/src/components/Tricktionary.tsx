@@ -6,9 +6,6 @@ import Topbar from "./Topbar";
 interface TrickData {
   [level: string]: string[];
 }
-function goToTrickManager() {
-  window.location.href = '/trick_manager';
-}
 
 const Tricktionary: React.FC = () => {
   const [tricks, setTricks] = useState<TrickData | null>(null); // null indicates data is not loaded
@@ -46,13 +43,6 @@ const Tricktionary: React.FC = () => {
   return (
     <>
       <Topbar />
-      <div className="add_delete_container">
-        <button
-          className="add_delete"
-          onClick={goToTrickManager}>
-          Add/Delete Tricks
-        </button>
-      </div>
       <div>
         {tricks &&
           Object.entries(tricks).map(([level, names]) => (

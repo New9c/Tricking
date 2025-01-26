@@ -17,6 +17,7 @@ class User(BaseModel):
     gender: Gender
     age: int
     password: str
+    role: Role = Role.STUDENT
 
 class UserLogin(BaseModel):
     account: str
@@ -29,6 +30,7 @@ class UserCreate(BaseModel):
     gender: Gender
     age: int
     password: str
+    role: Role = Role.STUDENT
 
 class UserUpdate(BaseModel):
     username: Optional[str] = None
@@ -37,4 +39,5 @@ class UserUpdate(BaseModel):
     gender: Optional[Gender] = None
     age: Optional[int] = None
     password: Optional[str] = None
+    role: Optional[Role] = None
 

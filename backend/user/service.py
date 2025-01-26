@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
 
-from user.schemas import UserCreate, UserUpdate, UserLogin
+from user.schemas import UserCreate, UserUpdate, UserLogin, Role
 from config import config
 
 _pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -96,6 +96,8 @@ def register_user(user: UserCreate, collection: Collection):
     _verify_params(user)
 
     user.password = _hash_pwd(user.password)
+    if collection.count_documents({"role": Role.ADMIN})==0:
+        user.role = Role.ADMIN
     collection.insert_one(user.model_dump())
 
 def update_user(username:str, user: UserUpdate, collection: Collection):

@@ -7,6 +7,10 @@ import defaultAvatar from '../assets/default-avatar.svg';
 import cameraIcon from '../assets/camera.svg';
 import Topbar from './Topbar';
 
+function goToTrickManager() {
+  window.location.href = '/trick_manager';
+}
+
 interface MemberData {
   username: string;
   email: string;
@@ -14,6 +18,7 @@ interface MemberData {
   gender: 'male' | 'female';
   age: number;
   password?: string; // 密碼通常不從後端直接獲取，這裡僅為示範
+  role: 'admin' | 'teacher' | 'student';
 }
 
 const MemberPage: React.FC = () => {
@@ -23,6 +28,7 @@ const MemberPage: React.FC = () => {
     phone: 'Loading...',
     gender: 'male',
     age: 0,
+    role: 'student'
   });
   const [isEditing, setIsEditing] = useState(false);
   const [originalData, setOriginalData] = useState<MemberData | null>(null);
@@ -31,7 +37,7 @@ const MemberPage: React.FC = () => {
     const fetchMemberData = async () => {
       const token = localStorage.getItem('access_token');
       if (!token) {
-        alert('Please log in first.');
+        alert('請先登入');
         window.location.href = '/login';
         return;
       }
@@ -46,6 +52,7 @@ const MemberPage: React.FC = () => {
       });
       if (response.ok) {
         const data = await response.json();
+        localStorage.setItem('user_role', data.role);
         setMemberData(data);
         setOriginalData(data);
       } else {
@@ -72,6 +79,12 @@ const MemberPage: React.FC = () => {
       gender: e.target.value as 'male' | 'female',
     }));
   };
+  const handleRoleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMemberData((prevData) => ({
+      ...prevData,
+      role: e.target.value as 'admin' | 'teacher' | 'student',
+    }));
+  };
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -85,6 +98,16 @@ const MemberPage: React.FC = () => {
       setIsEditing(false);
       return;
     }
+    if (memberData.role !== 'admin' && originalData.role === 'admin') {
+      const confirmation = confirm(
+        "你確定要成為非幹部？會失去幹部的權限。"
+      );
+      if (!confirmation) {
+        setMemberData(originalData);
+        return;
+      }
+    }
+
     const { password, ...noPwdData } = memberData;
     const token = localStorage.getItem('access_token');
     const response = await fetch("http://localhost:8000/api/v1/me", {
@@ -101,7 +124,7 @@ const MemberPage: React.FC = () => {
       setOriginalData(memberData);
       alert('儲存成功!');
     } else {
-      console.error('儲存失敗');
+      alert('儲存失敗');
     }
   };
 
@@ -127,6 +150,15 @@ const MemberPage: React.FC = () => {
                 <img src={cameraIcon} alt="Change Picture" />
               </button>
             </div>
+          </div>
+          <div className="add_delete_container">
+            {(localStorage.getItem('user_role') !== 'student') &&
+              <button
+                className="add_delete"
+                onClick={goToTrickManager}>
+                Add/Delete Tricks
+              </button>
+            }
           </div>
           <div className="info-container">
             <input
@@ -197,6 +229,41 @@ const MemberPage: React.FC = () => {
               readOnly
               onClick={() => alert('請到其他頁面修改密碼')} // 提示修改密碼
             />
+            <div className="info-role">
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="admin"
+                  checked={memberData.role === 'admin'}
+                  onChange={handleRoleChange}
+                  disabled={!(isEditing && originalData != null && originalData.role === 'admin')}
+                />{' '}
+                幹部
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="teacher"
+                  checked={memberData.role === 'teacher'}
+                  onChange={handleRoleChange}
+                  disabled={!(isEditing && originalData != null && originalData.role === 'admin')}
+                />{' '}
+                教師
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="student"
+                  checked={memberData.role === 'student'}
+                  onChange={handleRoleChange}
+                  disabled={!(isEditing && originalData != null && originalData.role === 'admin')}
+                />{' '}
+                學生
+              </label>
+            </div>
           </div>
           <div className="button-container">
             <button className="back-btn" onClick={handleLogout}>

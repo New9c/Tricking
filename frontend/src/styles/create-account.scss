@@ -43,6 +43,7 @@
 }
 
 .sex-radio {
+    text-align: center;
     color: white;
     /* font-family: "Noto Sans TC"; */
     font-size: 18px;
@@ -56,6 +57,7 @@
 }
 
 .button-container {
+    gap: 30px;
     display: flex;
     justify-content: center;
     margin-top: 30px;
