@@ -1,70 +1,175 @@
-import React, { useState } from 'react';
+import '../styles/global.scss';
+import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import '../styles/user_manager.scss';
 import '../styles/global.scss';
 import Topbar from './Topbar';
+import Loading from './Loading';
+
+interface UsersData {
+  [role: string]: string[];
+}
 
 const UserManager: React.FC = () => {
-  const [account, setAccount] = useState('');
-  const [password, setPassword] = useState('');
-  const [responseMessage, setResponseMessage] = useState<{ text: string; color: string }>({
-    text: "",
-    color: "white",
-  });
+  const [users, setUsers] = useState<UsersData | null>(null);
+  const [userRoles, setUserRoles] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(true); // Tracks loading state
+  const token = localStorage.getItem('access_token');
+  const role = localStorage.getItem('user_role');
 
-  const handleLogin = async () => {
-    // TODO: 在這裡呼叫後端 API 進行登入驗證
-    // 假設後端 API 端點是 /api/v1/login，使用 POST 方法
-    setResponseMessage({ text: "Processing...", color: "white" });
-    try {
-      const response = await fetch("http://localhost:8000/api/v1/login", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({ username: account, password }),
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    if (!token) {
+      alert('請先登入');
+      window.location.href = '/login';
+    } else if (role !== 'admin') {
+      alert('只有幹部可以改他人權限');
+      window.location.href = '/';
+    }
+    const response = await fetch("http://localhost:8000/api/v1/users", {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    setIsLoading(false);
+    if (response.ok) {
+      const data: UsersData = await response.json();
+      setUsers(data);
+
+      const initialRoles: Record<string, string> = {};
+      Object.entries(data).forEach(([role, usernames]) => {
+        usernames.forEach((username) => {
+          initialRoles[username] = role;
+        });
       });
-
-      if (response.ok) {
-        // 登入成功，跳轉到會員頁面
-        const data = await response.json();
-        localStorage.setItem('access_token', data.access_token);
-        window.location.href = '/member';
-      } else {
-        // 登入失敗，顯示錯誤訊息
-        const errorData = await response.json();
-        setResponseMessage({ text: errorData.detail || "An unexpected error occurred.", color: "red" });
-      }
-    } catch (error) {
-      setResponseMessage({ text: "Failed to connect to the server.", color: "red" });
+      setUserRoles(initialRoles);
+    } else {
+      alert("請重新登入");
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user_role');
+      window.location.href = '/login';
     }
   };
+
+  const handleRoleChange = (username: string, role: string) => {
+    setUserRoles((prevRoles) => ({
+      ...prevRoles,
+      [username]: role,
+    }));
+    saveRoleChange(username, role);
+    fetchUsers();
+  };
+
+  const saveRoleChange = (username: string, role: string) => {
+    const confirmation = confirm(
+      "確定更改權限？"
+    );
+    if (!confirmation) {
+      return
+    }
+    fetch("http://localhost:8000/api/v1/update_role", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: username, role: role }),
+    })
+      .then((response) => {
+        fetchUsers();
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            console.error("Failed to update role:", errorData);
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating role:", error);
+      });
+  };
+
+  const handleUserDelete = (username: string) => {
+    const confirmation = confirm(
+      "確定刪除用戶？"
+    );
+    if (!confirmation) {
+      fetchUsers();
+      return
+    }
+    fetch(`http://localhost:8000/api/v1/delete/${username}`, {
+      method: "DELETE"
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            console.error("Failed to delete user:", errorData);
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting user:", error);
+      });
+    fetchUsers();
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  if (isLoading)
+    return <Loading />
 
   return (
     <>
       <Topbar />
-      <div className="center-container">
-        <div className="admin-box">
-          <div className="welcome-title">User Manager</div>
-          <input
-            type="text"
-            className="account-input"
-            placeholder="Username, phone or email"
-            value={account}
-            onChange={(e) => setAccount(e.target.value)}
-          />
-          {responseMessage.text && (
-            <p style={{ color: responseMessage.color }}>
-              {responseMessage.text}
-            </p>
-          )}
-          <div className="button-container">
-            <button className="login-btn" onClick={handleLogin}>
-              搜尋
-            </button>
+      {users &&
+        Object.entries(users).map(([_, usernames]) => (
+          <div className="user-container" key={_}>
+            {usernames.map((name) => (
+              <div className="user-box" key={name}>
+                <div className="info-top">
+                  {name}
+                  <button className="delete-btn" onClick={() => handleUserDelete(name)}>
+                    刪除
+                  </button>
+                </div>
+                <div className="info-role">
+                  <label>
+                    <input
+                      type="radio"
+                      name={`${name}-role`}
+                      value="admin"
+                      checked={userRoles[name] === 'admin'}
+                      onChange={() => handleRoleChange(name, 'admin')}
+                    />{' '}
+                    幹部
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name={`${name}-role`}
+                      value="teacher"
+                      checked={userRoles[name] === 'teacher'}
+                      onChange={() => handleRoleChange(name, 'teacher')}
+                    />{' '}
+                    教師
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name={`${name}-role`}
+                      value="student"
+                      checked={userRoles[name] === 'student'}
+                      onChange={() => handleRoleChange(name, 'student')}
+                    />{' '}
+                    學生
+                  </label>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-      </div>
+        ))}
     </>
   );
 };

@@ -1,7 +1,8 @@
+import '../styles/global.scss';
 import React, { useEffect, useState } from "react";
 import '../styles/tricktionary.scss';
-import '../styles/global.scss';
 import Topbar from "./Topbar";
+import Loading from "./Loading";
 
 interface TrickData {
   [level: string]: string[];
@@ -12,28 +13,27 @@ const Tricktionary: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true); // Tracks loading state
   const [error, setError] = useState<string | null>(null); // Tracks errors
 
-  useEffect(() => {
-    const fetchTricks = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch("http://localhost:8000/api/v1/tricktionary/get");
-        if (!response.ok) {
-          throw new Error("Failed to fetch tricks");
-        }
-        const data = await response.json();
-        setTricks(data);
-      } catch (err: any) {
-        setError(err.message || "An unexpected error occurred");
-      } finally {
-        setIsLoading(false); // Loading finished
+  const fetchTricks = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("http://localhost:8000/api/v1/tricktionary/get");
+      if (!response.ok) {
+        throw new Error("Failed to fetch tricks");
       }
-    };
-
+      const data = await response.json();
+      setTricks(data);
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred");
+    } finally {
+      setIsLoading(false); // Loading finished
+    }
+  };
+  useEffect(() => {
     fetchTricks();
   }, []);
 
   if (isLoading) {
-    return <div>Loading tricks...</div>; // Loading indicator
+    return <Loading />
   }
 
   if (error) {

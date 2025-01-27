@@ -1,3 +1,4 @@
+import '../styles/global.scss';
 import React, { useState } from "react";
 import "../styles/trick-manager.scss";
 import Topbar from "./Topbar";
@@ -6,7 +7,10 @@ const TrickManager: React.FC = () => {
   const [mode, setMode] = useState<"add" | "delete">("add"); // Add or Delete mode
   const [trickName, setTrickName] = useState<string>(""); // Trick name input
   const [trickLevel, setTrickLevel] = useState<string>(""); // Trick name input
-  const [responseMessage, setResponseMessage] = useState<string>(""); // Feedback message
+  const [responseMessage, setResponseMessage] = useState<{ text: string; color: string }>({
+    text: "",
+    color: "white",
+  });
 
   const token = localStorage.getItem('access_token');
   const role = localStorage.getItem('user_role');
@@ -31,19 +35,19 @@ const TrickManager: React.FC = () => {
           body: JSON.stringify({ name: trickName, level: trickLevel }),
         });
         if (response.ok) {
-          setResponseMessage(`Trick '${trickName}' added successfully!`);
+          setResponseMessage({ text: `Trick '${trickName}' added successfully!`, color: "white" });
           setTrickName(""); // Clear input
         } else {
           const errorData = await response.json();
-          setResponseMessage(`Error: ${errorData.detail}`);
+          setResponseMessage({ text: `Error: ${errorData.detail}`, color: "red" });
         }
       } catch (error) {
-        setResponseMessage("Failed to connect to the server.");
+        setResponseMessage({ text: "Failed to connect to the server.", color: "red" });
       }
     } else {
       // Handle Delete Trick
       if (!trickName) {
-        setResponseMessage("Please provide a trick name to delete.");
+        setResponseMessage({ text: "Please provide a trick name to delete.", color: "white" });
         return;
       }
       try {
@@ -52,14 +56,14 @@ const TrickManager: React.FC = () => {
           headers: { "Content-Type": "application/json" },
         });
         if (response.ok) {
-          setResponseMessage(`Trick '${trickName}' deleted successfully!`);
+          setResponseMessage({ text: `Trick '${trickName}' deleted successfully!`, color: "white" });
           setTrickName(""); // Clear input
         } else {
           const errorData = await response.json();
-          setResponseMessage(`Error: ${errorData.detail}`);
+          setResponseMessage({ text: `Error: ${errorData.detail}`, color: "red" });
         }
       } catch (error) {
-        setResponseMessage("Failed to connect to the server.");
+        setResponseMessage({ text: "Failed to connect to the server.", color: "red" });
       }
     }
   };
@@ -72,7 +76,7 @@ const TrickManager: React.FC = () => {
           <h1 className="title">Trick Manager</h1>
 
           {/* Mode Selector */}
-          <div>
+          <div className="trick-radio">
             <label>
               <input
                 type="radio"
@@ -102,7 +106,6 @@ const TrickManager: React.FC = () => {
                 type="text"
                 value={trickName}
                 onChange={(e) => setTrickName(e.target.value)}
-                style={{ marginLeft: "10px" }}
               />
             </label>
           </div>
@@ -116,13 +119,11 @@ const TrickManager: React.FC = () => {
                   type="text"
                   value={trickLevel}
                   onChange={(e) => setTrickLevel(e.target.value)}
-                  style={{ marginLeft: "10px" }}
                 />
               </label>
             </div>
           )}
 
-          {/* Submit Button */}
           <div className="button-container">
             <button
               className="action-btn"
@@ -132,9 +133,10 @@ const TrickManager: React.FC = () => {
             </button>
           </div>
 
-          {/* Response Message */}
-          {responseMessage && (
-            <div>{responseMessage}</div>
+          {responseMessage.text && (
+            <p style={{ color: responseMessage.color }}>
+              {responseMessage.text}
+            </p>
           )}
         </div>
       </div>

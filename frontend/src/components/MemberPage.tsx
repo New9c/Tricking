@@ -1,8 +1,8 @@
 // frontend/src/components/MemberPage.tsx
+import '../styles/global.scss';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/member.scss';
-import '../styles/global.scss';
 import defaultAvatar from '../assets/default-avatar.svg';
 import cameraIcon from '../assets/camera.svg';
 import Topbar from './Topbar';
@@ -56,7 +56,10 @@ const MemberPage: React.FC = () => {
         setMemberData(data);
         setOriginalData(data);
       } else {
-        console.error('無法獲取會員資料');
+        alert("請重新登入");
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('user_role');
+        window.location.href = '/login';
       }
     };
 
@@ -152,7 +155,7 @@ const MemberPage: React.FC = () => {
               </button>
             </div>
           </div>
-          <div className="add_delete_container">
+          <div className="special_btns_container">
             {(localStorage.getItem('user_role') === 'admin') &&
               <button
                 className="user_manager"

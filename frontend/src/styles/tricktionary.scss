@@ -38,26 +38,3 @@ header {
     cursor: pointer;
     transition: all 0.3s ease;
 }
-
-.add_delete_container {
-    display: flex;
-    justify-content: center;
-}
-
-.add_delete {
-    font-size: 16px;
-    border: 1px solid rgb(0, 78, 222);
-    border-radius: 3px;
-    margin: 10px;
-    padding: 10px;
-    min-width: 20%;
-    line-height: 30px;
-    background: linear-gradient(135deg, rgb(77, 250, 52), rgb(255, 47, 47));
-}
-
-.add_delete:hover {
-    font-weight: 800;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}

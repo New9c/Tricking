@@ -1,9 +1,8 @@
 // frontend/src/components/CreateAccountPage.tsx
+import '../styles/global.scss';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/create-account.scss';
-import '../styles/global.scss';
-import Logo from './Logo';
 import Topbar from './Topbar';
 
 const CreateAccountPage: React.FC = () => {

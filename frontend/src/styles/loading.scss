@@ -1,0 +1,9 @@
+.loading-container {
+    position: fixed;
+    /* Make it fixed relative to the screen */
+    top: 50%;
+    /* Center vertically */
+    left: 50%;
+    /* Center horizontally */
+    transform: translate(-50%, -50%);
+}

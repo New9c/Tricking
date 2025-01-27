@@ -134,7 +134,6 @@
 .back-btn {
     background-color: white;
     color: rgb(97, 53, 53);
-    margin-right: 50px;
 }
 
 .back-btn:hover {
@@ -152,4 +151,46 @@
     background-color: rgb(97, 53, 53);
     color: white;
     border: 1px solid white;
+}
+
+.special_btns_container {
+    display: flex;
+    justify-content: center;
+}
+
+.user_manager {
+    font-size: 16px;
+    border: 3px solid rgb(2, 37, 214, 0.8);
+    border-radius: 3px;
+    margin: 10px;
+    padding: 10px;
+    min-width: 20%;
+    line-height: 30px;
+    background: rgb(255, 255, 255);
+}
+
+.user_manager:hover {
+    color: rgb(255, 255, 255);
+    background: rgb(2, 37, 214);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+.add_delete {
+    font-size: 16px;
+    border: 3px solid rgb(3, 145, 41, 0.8);
+    border-radius: 3px;
+    margin: 10px;
+    padding: 10px;
+    min-width: 20%;
+    line-height: 30px;
+    background: rgb(255, 255, 255);
+}
+
+.add_delete:hover {
+    color: rgb(255, 255, 255);
+    background: rgb(3, 145, 41);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }

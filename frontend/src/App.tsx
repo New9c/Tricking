@@ -8,6 +8,7 @@ import Tricktionary from './components/Tricktionary';
 import TrickManager from './components/TrickManager';
 import MainPage from './components/MainPage';
 import UserManager from './components/UserManager';
+import Loading from './components/Loading';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/user_manager" element={<UserManager />} />
         <Route path="/tricktionary" element={<Tricktionary />} />
         <Route path="/trick_manager" element={<TrickManager />} />
+        <Route path="/loading" element={<Loading />} />
       </Routes>
     </Router>
   );
