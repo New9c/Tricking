@@ -44,6 +44,11 @@
     font-size: 15px;
 }
 
+.field-input:disabled {
+    background-color: rgba(226, 226, 226, 0.466);
+    color: rgba(226, 226, 226, 0.466);
+}
+
 .field-input:focus {
     outline: none;
 }

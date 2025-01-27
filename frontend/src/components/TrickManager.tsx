@@ -98,31 +98,29 @@ const TrickManager: React.FC = () => {
           </div>
 
           {/* Form */}
-          <div>
-            <label>
-              <input
-                className="field-input"
-                placeholder="Trick Name"
-                type="text"
-                value={trickName}
-                onChange={(e) => setTrickName(e.target.value)}
-              />
-            </label>
-          </div>
+          <input
+            className="field-input"
+            placeholder="Trick Name"
+            type="text"
+            value={trickName}
+            onChange={(e) => setTrickName(e.target.value)}
+          />
 
-          {mode === "add" && (
-            <div>
-              <label>
-                <input
-                  className="field-input"
-                  placeholder="Trick Level"
-                  type="text"
-                  value={trickLevel}
-                  onChange={(e) => setTrickLevel(e.target.value)}
-                />
-              </label>
-            </div>
-          )}
+          <input
+            className="field-input"
+            placeholder={"Trick Level"}
+            type="text"
+            value={mode === "add" ? trickLevel : "Add Trick Param"}
+            disabled={mode !== "add"}
+            onChange={(e) => setTrickLevel(e.target.value)}
+          />
+          <textarea
+            className="field-input"
+            rows={4}
+            value={mode === "add" ? trickLevel : "Add Trick Param"}
+            placeholder="Trick Description"
+            disabled={mode !== "add"}
+          />
 
           <div className="button-container">
             <button
