@@ -1,9 +1,6 @@
-import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import MagicMock
 from main import app
 from dependencies import get_users_collection, mock_users_collection
-from user.service import register_user  # Make sure to import your service functions
 
 # Override the dependency in the FastAPI app
 app.dependency_overrides[get_users_collection] = mock_users_collection
@@ -112,4 +109,11 @@ def test_update_user():
     }
 
     response = client.put("/api/v1/me", json=update_data, headers=header)
+    assert response.status_code == 200
+def test_admin_fetch_user():
+    assert user_token!=None
+    header = {
+        "Authorization": f"Bearer {user_token}"
+    }
+    response = client.get("/api/v1/users", headers=header)
     assert response.status_code == 200

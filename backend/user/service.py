@@ -4,8 +4,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
+from collections import defaultdict
 
-from user.schemas import UserCreate, UserUpdate, UserLogin, Role
+from user.schemas import UserCreate, UserRoleUpdate, UserUpdate, UserLogin, Role
 from config import config
 
 _pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -124,3 +125,33 @@ def delete_user(account: str, collection: Collection):
     if user_to_delete==None:
         raise HTTPException(status_code=404, detail="User Not Found")
     collection.delete_one({"username": user_to_delete["username"]})
+
+
+def admin_fetch_users(account: str, collection: Collection):
+    admin =  _fetch_user(account, account, account, collection)
+    if admin==None:
+        raise HTTPException(status_code=404, detail="Admin Not Found")
+    elif admin["role"]!="admin":
+        raise HTTPException(status_code=403, detail="Not Admin")
+    users = collection.find({ "role": { "$ne": "admin" } })
+    group = defaultdict(set)
+    for user in users:
+        group[user["role"]].add(user["username"])
+    group_json = {}
+    if "teacher" in group:
+        group_json["teacher"] = group["teacher"]
+    if "student" in group:
+        group_json["student"] = group["student"]
+    return group_json
+
+
+def admin_update_user_role(account: str, user: UserRoleUpdate,  collection: Collection):
+    admin =  _fetch_user(account, account, account, collection)
+    if admin==None:
+        raise HTTPException(status_code=404, detail="Admin Not Found")
+    elif admin["role"]!="admin":
+        raise HTTPException(status_code=403, detail="Not Admin")
+    user_to_update  = collection.update_one({"username": user.username}, {"$set": {"role": user.role}})
+    if user_to_update.modified_count == 0:
+        raise HTTPException(status_code=404, detail="User Not Found")
+    return {"status": 200}

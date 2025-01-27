@@ -3,7 +3,7 @@ from fastapi import Depends, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 
 from user.auth import CurrentLoggedInUser
-from user.schemas import UserCreate, UserUpdate
+from user.schemas import UserCreate, UserRoleUpdate, UserUpdate
 import user.service as service
 from dependencies import get_users_collection as get_collection
 
@@ -37,9 +37,15 @@ def update_user(username: CurrentLoggedInUser, user: UserUpdate, users_collectio
 def fetch_user(username: CurrentLoggedInUser, users_collection = Depends(get_collection)):
     return service.fetch_user(username, users_collection)
 
-
-@router.post("/delete", responses=core_responses)
+@router.delete("/delete/{account}", responses=core_responses)
 def delete_user(account: str, users_collection = Depends(get_collection)):
     service.delete_user(account, users_collection)
     return {"status_code": 200}
 
+@router.get("/users", responses=core_responses)
+def admin_fetch_users(admin: CurrentLoggedInUser, users_collection = Depends(get_collection)):
+    return service.admin_fetch_users(admin, users_collection)
+
+@router.post("/update_role", responses=core_responses)
+def admin_update_user_role(admin: CurrentLoggedInUser, user: UserRoleUpdate,  users_collection = Depends(get_collection)):
+    return service.admin_update_user_role(admin, user, users_collection)

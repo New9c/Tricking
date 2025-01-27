@@ -41,3 +41,7 @@ class UserUpdate(BaseModel):
     password: Optional[str] = None
     role: Optional[Role] = None
 
+
+class UserRoleUpdate(BaseModel):
+    username: str
+    role: Role

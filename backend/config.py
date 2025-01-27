@@ -6,6 +6,7 @@ class Config(BaseSettings):
     model_config = SettingsConfigDict(env_file=_env_file_path, extra="ignore")
     SECRET_JWT: str
     PASSWORD: str
+    DB_NAME: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 config = Config()
