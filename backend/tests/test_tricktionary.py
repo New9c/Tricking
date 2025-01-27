@@ -25,11 +25,22 @@ def test_add_trick():
     assert mock_tricktionary_collection().count_documents({"name": "Back Flip"}) == 0
     trick_data = {
         "name" : "Back Flip",
-        "level" : "Novice"
+        "level" : "Novice",
+        "desc" : "A god damn description."
     }
     response = client.post("/api/v1/tricktionary/add", json=trick_data)
     assert response.status_code == 200
     assert mock_tricktionary_collection().count_documents({"name": "Back Flip"}) == 1
+
+def test_lack_desc_add_trick():
+    start = mock_tricktionary_collection().count_documents({"name": "Back Flip"})
+    trick_data = {
+        "name" : "Back Flip",
+        "level" : "Novice"
+    }
+    response = client.post("/api/v1/tricktionary/add", json=trick_data)
+    assert response.status_code != 200
+    assert mock_tricktionary_collection().count_documents({"name": "Back Flip"})==start
 
 
 def test_fetch_tricks_one():

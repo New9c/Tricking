@@ -8,8 +8,8 @@ def fetch_tricks(collection: Collection):
     tricks = collection.find()
     group = defaultdict(set)
     for trick in tricks:
-        group[trick["level"]].add(trick["name"])
-    group_json = {level: list(names) for level, names in group.items()}
+        group[trick["level"]].add((trick["name"], trick["desc"]))
+    group_json = {level: list(vals) for level, vals in group.items()}
     return group_json
 
 def add_trick(trick: TrickCreate, collection: Collection):
