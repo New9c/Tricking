@@ -13,6 +13,7 @@ interface TrickData {
 
 const Tricktionary: React.FC = () => {
   const [tricks, setTricks] = useState<TrickData | null>(null); // null indicates data is not loaded
+  const [selectedTrick, setSelectedTrick] = useState<{ name: string; desc: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true); // Tracks loading state
   const [error, setError] = useState<string | null>(null); // Tracks errors
 
@@ -57,7 +58,7 @@ const Tricktionary: React.FC = () => {
                   <button
                     className="trick-btn"
                     key={name}
-                    title={desc}
+                    onClick={() => setSelectedTrick({ name, desc })}
                   >
                     {name}
                   </button>
@@ -65,6 +66,14 @@ const Tricktionary: React.FC = () => {
               </div>
             </div>
           ))};
+
+        {selectedTrick && (
+          <div className="sidebar">
+            <h2>{selectedTrick.name}</h2>
+            <p>{selectedTrick.desc}</p>
+            <i className='fa fa-close' onClick={() => setSelectedTrick(null)}></i>
+          </div>
+        )}
       </div>
     </>
   );
