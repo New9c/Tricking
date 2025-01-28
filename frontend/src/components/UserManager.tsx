@@ -1,8 +1,7 @@
 import '../styles/global.scss';
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/user_manager.scss';
-import '../styles/global.scss';
 import Topbar from './Topbar';
 import Loading from './Loading';
 

@@ -154,7 +154,7 @@ const MemberPage: React.FC = () => {
           </div>
           <div className="special_btns_container">
             {(localStorage.getItem('user_role') === 'admin') &&
-              <Link to={'/user_manager'}>
+              <Link to={'/user_manager'} style={{ textDecoration: 'none' }}>
                 <button
                   className="user_manager">
                   User Manager
@@ -162,7 +162,7 @@ const MemberPage: React.FC = () => {
               </Link>
             }
             {(localStorage.getItem('user_role') !== 'student') &&
-              <Link to={'/trick_manager'}>
+              <Link to={'/trick_manager'} style={{ textDecoration: 'none' }}>
                 <button
                   className="add_delete">
                   Add/Delete Tricks

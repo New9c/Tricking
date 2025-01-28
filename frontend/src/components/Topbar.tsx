@@ -11,13 +11,13 @@ function Topbar() {
     <div className="topbar">
       <Logo />
       <div className="right-btns">
-        <Link to={'/tricktionary'}>
+        <Link to={'/tricktionary'} style={{ textDecoration: 'none' }}>
           <button className="tricktionary-btn">
             Tricktionary
             <img className="dict-img" src={dictImg} alt="dictionary image" />
           </button>
         </Link>
-        <Link to={token ? '/member' : '/login'} >
+        <Link to={token ? '/member' : '/login'} style={{ textDecoration: 'none' }} >
           {!token ? (
             <button className="user-btn">
               登入
