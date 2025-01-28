@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import '../styles/tricktionary.scss';
 import Topbar from "./Topbar";
 import Loading from "./Loading";
+import ErrorPage from './Error';
 
 interface TrickData {
   [level: string]: string[];
@@ -37,7 +38,7 @@ const Tricktionary: React.FC = () => {
   }
 
   if (error) {
-    return <div>Error: {error}</div>; // Error message
+    return <ErrorPage />;
   }
 
   return (

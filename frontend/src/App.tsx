@@ -9,6 +9,7 @@ import TrickManager from './components/TrickManager';
 import MainPage from './components/MainPage';
 import UserManager from './components/UserManager';
 import Loading from './components/Loading';
+import ErrorPage from './components/Error';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/tricktionary" element={<Tricktionary />} />
         <Route path="/trick_manager" element={<TrickManager />} />
         <Route path="/loading" element={<Loading />} />
+        <Route path="/error" element={<ErrorPage />} />
       </Routes>
     </Router>
   );
