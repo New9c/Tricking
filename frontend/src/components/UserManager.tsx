@@ -1,6 +1,6 @@
 import '../styles/global.scss';
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/user_manager.scss';
 import '../styles/global.scss';
 import Topbar from './Topbar';
@@ -11,6 +11,7 @@ interface UsersData {
 }
 
 const UserManager: React.FC = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState<UsersData | null>(null);
   const [userRoles, setUserRoles] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true); // Tracks loading state
@@ -21,10 +22,10 @@ const UserManager: React.FC = () => {
     setIsLoading(true);
     if (!token) {
       alert('請先登入');
-      window.location.href = '/login';
+      navigate('/login')
     } else if (role !== 'admin') {
       alert('只有幹部可以改他人權限');
-      window.location.href = '/';
+      navigate('/')
     }
     const response = await fetch("http://localhost:8000/api/v1/users", {
       method: 'GET',
@@ -49,7 +50,7 @@ const UserManager: React.FC = () => {
       alert("請重新登入");
       localStorage.removeItem('access_token');
       localStorage.removeItem('user_role');
-      window.location.href = '/login';
+      navigate('/login')
     }
   };
 

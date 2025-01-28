@@ -2,40 +2,33 @@ import Logo from "./Logo";
 import dictImg from '../assets/dictionary.png';
 import userImg from '../assets/default-avatar.svg';
 import '../styles/topbar.scss';
-
-const token = localStorage.getItem('access_token');
-function goToTricktionary() {
-  if (window.location.pathname.toString() != '/tricktionary')
-    window.location.href = '/tricktionary';
-}
-function handleUser() {
-  if (!token) {
-    window.location.href = '/login';
-  } else {
-    window.location.href = '/member';
-  }
-}
+import { Link } from "react-router-dom";
 
 function Topbar() {
+  const token = localStorage.getItem('access_token');
 
   return (
     <div className="topbar">
       <Logo />
       <div className="right-btns">
-        <button className="tricktionary-btn" onClick={goToTricktionary}>
-          Tricktionary
-          <img className="dict-img" src={dictImg} alt="dictionary image" />
-        </button>
-        {!token ? (
-          <button className="user-btn" onClick={handleUser}>
-            登入
+        <Link to={'/tricktionary'}>
+          <button className="tricktionary-btn">
+            Tricktionary
+            <img className="dict-img" src={dictImg} alt="dictionary image" />
           </button>
-        ) : (
-          <button className="user-btn" onClick={handleUser}>
-            你
-            <img className="user-img" src={userImg} alt="user image" />
-          </button>
-        )}
+        </Link>
+        <Link to={token ? '/member' : '/login'}>
+          {!token ? (
+            <button className="user-btn">
+              登入
+            </button>
+          ) : (
+            <button className="user-btn">
+              你
+              <img className="user-img" src={userImg} alt="user image" />
+            </button>
+          )}
+        </Link>
       </div>
     </div>
   );

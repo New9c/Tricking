@@ -1,10 +1,12 @@
 import '../styles/global.scss';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/login.scss';
 import Topbar from './Topbar';
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
   const [responseMessage, setResponseMessage] = useState<{ text: string; color: string }>({
@@ -34,7 +36,7 @@ const LoginPage: React.FC = () => {
         // 登入成功，跳轉到會員頁面
         const data = await response.json();
         localStorage.setItem('access_token', data.access_token);
-        window.location.href = '/member';
+        navigate('/member')
       } else {
         // 登入失敗，顯示錯誤訊息
         const errorData = await response.json();

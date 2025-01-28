@@ -1,11 +1,13 @@
 // frontend/src/components/CreateAccountPage.tsx
 import '../styles/global.scss';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/create-account.scss';
 import Topbar from './Topbar';
 
 const CreateAccountPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -37,7 +39,7 @@ const CreateAccountPage: React.FC = () => {
       if (response.ok) {
         // 創建成功，跳轉回登入頁面
         setResponseMessage({ text: "Success!", color: "white" });
-        window.location.href = '/login';
+        navigate('/login');
       } else {
         // 登入失敗，顯示錯誤訊息
         const errorData = await response.json();

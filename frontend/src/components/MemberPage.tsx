@@ -1,15 +1,11 @@
 // frontend/src/components/MemberPage.tsx
 import '../styles/global.scss';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/member.scss';
 import defaultAvatar from '../assets/default-avatar.svg';
 import cameraIcon from '../assets/camera.svg';
 import Topbar from './Topbar';
-
-function goToTrickManager() {
-  window.location.href = '/trick_manager';
-}
 
 interface MemberData {
   username: string;
@@ -22,6 +18,7 @@ interface MemberData {
 }
 
 const MemberPage: React.FC = () => {
+  const navigate = useNavigate()
   const [memberData, setMemberData] = useState<MemberData>({
     username: 'Loading...',
     email: 'Loading...',
@@ -38,7 +35,7 @@ const MemberPage: React.FC = () => {
       const token = localStorage.getItem('access_token');
       if (!token) {
         alert('請先登入');
-        window.location.href = '/login';
+        navigate('/login')
         return;
       }
       // TODO: 從後端 API 獲取會員資料
@@ -59,7 +56,7 @@ const MemberPage: React.FC = () => {
         alert("請重新登入");
         localStorage.removeItem('access_token');
         localStorage.removeItem('user_role');
-        window.location.href = '/login';
+        navigate('/login')
       }
     };
 
@@ -138,7 +135,7 @@ const MemberPage: React.FC = () => {
     }
     localStorage.removeItem('access_token');
     localStorage.removeItem('user_role');
-    window.location.href = '/login';
+    navigate('/login')
   };
 
   return (
@@ -157,18 +154,20 @@ const MemberPage: React.FC = () => {
           </div>
           <div className="special_btns_container">
             {(localStorage.getItem('user_role') === 'admin') &&
-              <button
-                className="user_manager"
-                onClick={() => window.location.href = '/user_manager'}>
-                User Manager
-              </button>
+              <Link to={'/user_manager'}>
+                <button
+                  className="user_manager">
+                  User Manager
+                </button>
+              </Link>
             }
             {(localStorage.getItem('user_role') !== 'student') &&
-              <button
-                className="add_delete"
-                onClick={goToTrickManager}>
-                Add/Delete Tricks
-              </button>
+              <Link to={'/trick_manager'}>
+                <button
+                  className="add_delete">
+                  Add/Delete Tricks
+                </button>
+              </Link>
             }
           </div>
           <div className="info-container">

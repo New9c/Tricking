@@ -2,8 +2,10 @@ import '../styles/global.scss';
 import React, { useState } from "react";
 import "../styles/trick-manager.scss";
 import Topbar from "./Topbar";
+import { useNavigate } from 'react-router-dom';
 
 const TrickManager: React.FC = () => {
+  const navigate = useNavigate()
   const [mode, setMode] = useState<"add" | "delete">("add");
   const [trickName, setTrickName] = useState<string>("");
   const [trickLevel, setTrickLevel] = useState<string>("");
@@ -17,10 +19,10 @@ const TrickManager: React.FC = () => {
   const role = localStorage.getItem('user_role');
   if (!token) {
     alert('請先登入');
-    window.location.href = '/login';
+    navigate('/login')
   } else if (role === 'student') {
     alert('學生無法編輯Tricks');
-    window.location.href = '/tricktionary';
+    navigate('/tricktionary')
   }
   const handleAction = async () => {
     if (mode === "add") {
