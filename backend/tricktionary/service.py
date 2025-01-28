@@ -2,14 +2,14 @@ from pymongo.collection import Collection
 from fastapi import HTTPException
 from collections import defaultdict
 
-from tricktionary.schemas import TrickCreate, TrickDelete
+from tricktionary.schemas import TrickCreate, TrickDelete, TrickVal
 
 def fetch_tricks(collection: Collection):
     tricks = collection.find()
-    group = defaultdict(set)
+    group = defaultdict(dict)
     for trick in tricks:
-        group[trick["level"]].add((trick["name"], trick["desc"]))
-    group_json = {level: list(vals) for level, vals in group.items()}
+        group[trick["level"]][trick["name"]] = trick["desc"]
+    group_json = {level: vals for level, vals in group.items()}
     return group_json
 
 def add_trick(trick: TrickCreate, collection: Collection):

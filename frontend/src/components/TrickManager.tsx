@@ -4,9 +4,10 @@ import "../styles/trick-manager.scss";
 import Topbar from "./Topbar";
 
 const TrickManager: React.FC = () => {
-  const [mode, setMode] = useState<"add" | "delete">("add"); // Add or Delete mode
-  const [trickName, setTrickName] = useState<string>(""); // Trick name input
-  const [trickLevel, setTrickLevel] = useState<string>(""); // Trick name input
+  const [mode, setMode] = useState<"add" | "delete">("add");
+  const [trickName, setTrickName] = useState<string>("");
+  const [trickLevel, setTrickLevel] = useState<string>("");
+  const [trickDesc, setTrickDesc] = useState<string>("");
   const [responseMessage, setResponseMessage] = useState<{ text: string; color: string }>({
     text: "",
     color: "white",
@@ -25,14 +26,14 @@ const TrickManager: React.FC = () => {
     if (mode === "add") {
       // Handle Add Trick
       if (!trickName || !trickLevel) {
-        setResponseMessage("Please provide both trick name and level.");
+        setResponseMessage({ text: "Please provide both trick name and level.", color: "red" });
         return;
       }
       try {
         const response = await fetch("http://localhost:8000/api/v1/tricktionary/add", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: trickName, level: trickLevel }),
+          body: JSON.stringify({ name: trickName, level: trickLevel, desc: trickDesc }),
         });
         if (response.ok) {
           setResponseMessage({ text: `Trick '${trickName}' added successfully!`, color: "white" });
@@ -75,7 +76,6 @@ const TrickManager: React.FC = () => {
         <div className="trick-manager-box">
           <h1 className="title">Trick Manager</h1>
 
-          {/* Mode Selector */}
           <div className="trick-radio">
             <label>
               <input
@@ -97,7 +97,6 @@ const TrickManager: React.FC = () => {
             </label>
           </div>
 
-          {/* Form */}
           <input
             className="field-input"
             placeholder="Trick Name"
@@ -117,9 +116,10 @@ const TrickManager: React.FC = () => {
           <textarea
             className="field-input"
             rows={4}
-            value={mode === "add" ? trickLevel : "Add Trick Param"}
+            value={mode === "add" ? trickDesc : "Add Trick Param"}
             placeholder="Trick Description"
             disabled={mode !== "add"}
+            onChange={(e) => setTrickDesc(e.target.value)}
           />
 
           <div className="button-container">

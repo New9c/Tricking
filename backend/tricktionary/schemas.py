@@ -9,5 +9,9 @@ class TrickCreate(BaseModel):
     level: str
     desc: str
 
+class TrickVal(BaseModel):
+    name: str
+    desc: str
+    
 class TrickDelete(BaseModel):
     name: str

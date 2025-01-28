@@ -6,7 +6,9 @@ import Loading from "./Loading";
 import ErrorPage from './Error';
 
 interface TrickData {
-  [level: string]: string[];
+  [level: string]: {
+    [name: string]: (string)
+  };
 }
 
 const Tricktionary: React.FC = () => {
@@ -45,22 +47,24 @@ const Tricktionary: React.FC = () => {
     <>
       <Topbar />
       <div>
-        {tricks &&
-          Object.entries(tricks).map(([level, names]) => (
+        {
+          tricks &&
+          Object.entries(tricks).map(([level, tricksAtLevel]) => (
             <div key={level}>
               <header>{level.charAt(0).toUpperCase() + level.slice(1)}</header>
               <div className="multiple-tricks">
-                {names.map((name) => (
+                {Object.entries(tricksAtLevel).map(([name, desc]) => (
                   <button
                     className="trick-btn"
-                    key={name}>
+                    key={name}
+                    title={desc}
+                  >
                     {name}
                   </button>
-
                 ))}
               </div>
             </div>
-          ))}
+          ))};
       </div>
     </>
   );
