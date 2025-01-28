@@ -17,7 +17,7 @@ function Topbar() {
             <img className="dict-img" src={dictImg} alt="dictionary image" />
           </button>
         </Link>
-        <Link to={token ? '/member' : '/login'}>
+        <Link to={token ? '/member' : '/login'} >
           {!token ? (
             <button className="user-btn">
               登入
