@@ -31,8 +31,18 @@ function MemberPage() {
       {role === "student_advanced" && <img className='card-img' src={advancedImg} alt="member card" />}
       {role === "student_beginner" && <img className='card-img' src={beginnerImg} alt="member card" />}
       <div className='btns'>
+        {role === 'admin' &&
+          <Link to={'/user_manager'}>
+            更改社員資訊
+          </Link>
+        }
+        {(role === 'admin' || role === 'teacher') &&
+          <Link to={'/trick_manager'}>
+            加入/刪除Trick
+          </Link>
+        }
         <Link to={"/member/edit"} >
-          Edit
+          個人資料
         </Link>
         <a className="back-btn" onClick={handleLogout}>
           登出

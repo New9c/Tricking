@@ -151,24 +151,6 @@ const EditMemberPage: React.FC = () => {
               </button>
             </div>
           </div>
-          <div className="special_btns_container">
-            {(localStorage.getItem('user_role') === 'admin') &&
-              <Link to={'/user_manager'} style={{ textDecoration: 'none' }}>
-                <button
-                  className="user_manager">
-                  User Manager
-                </button>
-              </Link>
-            }
-            {(localStorage.getItem('user_role') !== 'student') &&
-              <Link to={'/trick_manager'} style={{ textDecoration: 'none' }}>
-                <button
-                  className="add_delete">
-                  Add/Delete Tricks
-                </button>
-              </Link>
-            }
-          </div>
           <div className="info-container">
             <input
               type="text"
@@ -265,7 +247,7 @@ const EditMemberPage: React.FC = () => {
                 <input
                   type="radio"
                   name="role"
-                  value="student"
+                  value="student_advanced"
                   checked={memberData.role === 'student_advanced'}
                   onChange={handleRoleChange}
                   disabled={!(isEditing && originalData != null && originalData.role === 'admin')}
@@ -276,7 +258,7 @@ const EditMemberPage: React.FC = () => {
                 <input
                   type="radio"
                   name="role"
-                  value="student"
+                  value="student_beginner"
                   checked={memberData.role === 'student_beginner'}
                   onChange={handleRoleChange}
                   disabled={!(isEditing && originalData != null && originalData.role === 'admin')}
