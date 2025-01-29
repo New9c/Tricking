@@ -140,8 +140,10 @@ def admin_fetch_users(account: str, collection: Collection):
     group_json = {}
     if "teacher" in group:
         group_json["teacher"] = group["teacher"]
-    if "student" in group:
-        group_json["student"] = group["student"]
+    if "student_advanced" in group:
+        group_json["student_advanced"] = group["student_advanced"]
+    if "student_beginner" in group:
+        group_json["student_beginner"] = group["student_beginner"]
     return group_json
 
 
