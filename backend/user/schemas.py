@@ -5,7 +5,8 @@ from typing import Optional
 class Role(str, Enum):
     ADMIN = "admin"
     TEACHER = "teacher"
-    STUDENT = "student"
+    STUDENT_BEGINNER = "student_beginner"
+    STUDENT_ADVANCED = "student_advanced"
 class Gender(str, Enum):
     MALE = "male"
     FEMALE = "female"
@@ -17,7 +18,7 @@ class User(BaseModel):
     gender: Gender
     age: int
     password: str
-    role: Role = Role.STUDENT
+    role: Role = Role.STUDENT_BEGINNER
 
 class UserLogin(BaseModel):
     account: str
@@ -30,7 +31,7 @@ class UserCreate(BaseModel):
     gender: Gender
     age: int
     password: str
-    role: Role = Role.STUDENT
+    role: Role = Role.STUDENT_BEGINNER
 
 class UserUpdate(BaseModel):
     username: Optional[str] = None
