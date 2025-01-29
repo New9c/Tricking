@@ -76,7 +76,9 @@ const TrickManager: React.FC = () => {
       <Topbar />
       <div className="center-container">
         <div className="trick-manager-box">
-          <h1 className="title">Trick Manager</h1>
+          <h1 className="title">
+            加入/刪除Trick
+          </h1>
 
           <div className="trick-radio">
             <label>
@@ -86,7 +88,7 @@ const TrickManager: React.FC = () => {
                 checked={mode === "add"}
                 onChange={() => setMode("add")}
               />
-              Add Trick
+              加入Trick
             </label>
             <label>
               <input
@@ -95,13 +97,13 @@ const TrickManager: React.FC = () => {
                 checked={mode === "delete"}
                 onChange={() => setMode("delete")}
               />
-              Delete Trick
+              刪除Trick
             </label>
           </div>
 
           <input
             className="field-input"
-            placeholder="Trick Name"
+            placeholder="名稱"
             type="text"
             value={trickName}
             onChange={(e) => setTrickName(e.target.value)}
@@ -109,17 +111,17 @@ const TrickManager: React.FC = () => {
 
           <input
             className="field-input"
-            placeholder={"Trick Level"}
+            placeholder="難度"
             type="text"
-            value={mode === "add" ? trickLevel : "Add Trick Param"}
+            value={mode === "add" ? trickLevel : " "}
             disabled={mode !== "add"}
             onChange={(e) => setTrickLevel(e.target.value)}
           />
           <textarea
             className="field-input"
             rows={4}
-            value={mode === "add" ? trickDesc : "Add Trick Param"}
-            placeholder="Trick Description"
+            value={mode === "add" ? trickDesc : " "}
+            placeholder="簡介"
             disabled={mode !== "add"}
             onChange={(e) => setTrickDesc(e.target.value)}
           />
@@ -129,7 +131,7 @@ const TrickManager: React.FC = () => {
               className="action-btn"
               onClick={handleAction}
             >
-              {mode === "add" ? "Add Trick" : "Delete Trick"}
+              {mode === "add" ? "加入Trick" : "刪除Trick"}
             </button>
           </div>
 
