@@ -85,7 +85,7 @@ def login(form_data: OAuth2PasswordRequestForm, collection: Collection):
     if not _verify_pwd(user.password, login_user["password"]):
         raise HTTPException(status_code=401, detail="Password Invalid")
     access_token = _create_access_token(data={"sub": login_user["username"]})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"role": login_user["role"], "access_token": access_token, "token_type": "bearer"}
 
 def register_user(user: UserCreate, collection: Collection):
     """
