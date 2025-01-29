@@ -36,6 +36,7 @@ const LoginPage: React.FC = () => {
         // 登入成功，跳轉到會員頁面
         const data = await response.json();
         localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('user_role', data.role);
         navigate('/member')
       } else {
         // 登入失敗，顯示錯誤訊息

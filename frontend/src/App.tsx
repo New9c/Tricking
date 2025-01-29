@@ -10,6 +10,7 @@ import MainPage from './components/MainPage';
 import UserManager from './components/UserManager';
 import Loading from './components/Loading';
 import ErrorPage from './components/Error';
+import EditMemberPage from './components/EditMemberPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="/member" element={<MemberPage />} />
+        <Route path="/member/edit" element={<EditMemberPage />} />
         <Route path="/user_manager" element={<UserManager />} />
         <Route path="/tricktionary" element={<Tricktionary />} />
         <Route path="/trick_manager" element={<TrickManager />} />

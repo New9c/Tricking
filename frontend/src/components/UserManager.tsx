@@ -159,11 +159,21 @@ const UserManager: React.FC = () => {
                     <input
                       type="radio"
                       name={`${name}-role`}
-                      value="student"
-                      checked={userRoles[name] === 'student'}
-                      onChange={() => handleRoleChange(name, 'student')}
+                      value="student_advanced"
+                      checked={userRoles[name] === 'student_advanced'}
+                      onChange={() => handleRoleChange(name, 'student_advanced')}
                     />{' '}
-                    學生
+                    進階班
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name={`${name}-role`}
+                      value="student_beginner"
+                      checked={userRoles[name] === 'student_beginner'}
+                      onChange={() => handleRoleChange(name, 'student_beginner')}
+                    />{' '}
+                    入門班
                   </label>
                 </div>
               </div>

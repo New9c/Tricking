@@ -52,7 +52,8 @@
 }
 
 .info-role {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: space-evenly;
     align-items: center;
 }
