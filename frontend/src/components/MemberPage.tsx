@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import beginnerImg from '../assets/cards/Beginner.png';
 import advancedImg from '../assets/cards/Advanced.png';
@@ -5,6 +6,7 @@ import teacherImg from '../assets/cards/Teacher.png';
 import adminImg from '../assets/cards/Admin.png';
 import '../styles/member.scss';
 import Topbar from './Topbar';
+import Loading from './Loading';
 
 
 function MemberPage() {
@@ -13,15 +15,19 @@ function MemberPage() {
   const role = localStorage.getItem('user_role');
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user_role');
+    localStorage.clear();
     navigate('/login')
   };
 
-  if (!token || !role) {
-    alert('請先登入');
-    navigate('/login')
-    return;
+  useEffect(() => {
+    if (!token || !role) {
+      alert('請先登入');
+      navigate('/login');
+    }
+  }, [token, role, navigate]);
+
+  if (!token || !role && location.pathname === "/member") {
+    return <Loading />
   }
   return <>
     <Topbar />

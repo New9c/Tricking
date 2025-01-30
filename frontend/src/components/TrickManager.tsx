@@ -1,8 +1,9 @@
 import '../styles/global.scss';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/trick-manager.scss";
 import Topbar from "./Topbar";
 import { useNavigate } from 'react-router-dom';
+import Loading from './Loading';
 
 const TrickManager: React.FC = () => {
   const navigate = useNavigate()
@@ -17,13 +18,21 @@ const TrickManager: React.FC = () => {
 
   const token = localStorage.getItem('access_token');
   const role = localStorage.getItem('user_role');
-  if (!token) {
-    alert('請先登入');
-    navigate('/login')
-  } else if (role === 'student') {
-    alert('學生無法編輯Tricks');
-    navigate('/tricktionary')
+
+  useEffect(() => {
+    if (!token) {
+      alert('請先登入');
+      navigate('/login')
+    } else if (role === 'student') {
+      alert('學生無法編輯Tricks');
+      navigate('/tricktionary')
+    }
+  }, [token, role, navigate]);
+
+  if ((!token || role === 'student_beginner' || role === 'student_advanced') && location.pathname === "/trick_manager") {
+    return <Loading />
   }
+
   const handleAction = async () => {
     if (mode === "add") {
       // Handle Add Trick
