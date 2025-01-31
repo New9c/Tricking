@@ -78,7 +78,7 @@ const LoginPage: React.FC = () => {
             <button className="login-btn" onClick={handleLogin}>
               登入
             </button>
-            <Link to="/create-account" style={{ textDecoration: 'none' }}>
+            <Link to="/create-account">
               <button className="create-account-btn">加入會員</button>
             </Link>
           </div>

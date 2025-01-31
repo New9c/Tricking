@@ -117,7 +117,7 @@ const CreateAccountPage: React.FC = () => {
             </p>
           )}
           <div className="button-container">
-            <Link to="/login" style={{ textDecoration: 'none' }}>
+            <Link to="/login">
               <button className="back-to-login-btn">返回登入</button>
             </Link>
             <button className="submit-btn" onClick={handleSubmit}>
