@@ -23,7 +23,7 @@ def test_register_user():
     response = client.post("/api/v1/register", json=user_data)
     assert response.status_code == 200
 
-def test_fail_register_user():
+def test_same_register_user():
     user_data = {
         "username": "test",
         "email": "test@gmail.com",
@@ -35,10 +35,56 @@ def test_fail_register_user():
     response = client.post("/api/v1/register", json=user_data)
     assert response.status_code != 200
 
-user_token = None
+
+def test_bad_username_register_user():
+    user_data = {
+        "username": "has two@problems",
+        "email": "no@symbol.com",
+        "phone": "119110113",
+        "gender": "male",
+        "age": 19,
+        "password": "test"
+    }
+    response = client.post("/api/v1/register", json=user_data)
+    assert response.status_code != 200
+    
+def test_bad_email_register_user():
+    user_data = {
+        "username": "unique_user",
+        "email": "no_at_symbol",
+        "phone": "119110113",
+        "gender": "male",
+        "age": 19,
+        "password": "test"
+    }
+    response = client.post("/api/v1/register", json=user_data)
+    assert response.status_code != 200
+
+def test_bad_age_register_user():
+    user_data = {
+        "username": "unique_user",
+        "email": "no@symbol.com",
+        "phone": "119110113",
+        "gender": "male",
+        "age": 3000,
+        "password": "test"
+    }
+    response = client.post("/api/v1/register", json=user_data)
+    assert response.status_code != 200
+
+user_token: str = ""
+
+def test_fetch_user_no_token():
+    assert user_token==""
+    header = {
+        "Authorization": f"Bearer {user_token}"
+    }
+    response = client.get("/api/v1/me", headers=header)
+    assert response.status_code != 200
+
 def test_login():
     global user_token
-    user_data= {
+    user_data = {
         "grant_type": "password",
         "username": "test",
         "password": "test"
@@ -49,7 +95,7 @@ def test_login():
     assert "access_token" in json_response
     assert json_response["token_type"] == "bearer"
     user_token = json_response["access_token"]
-    assert user_token!=None
+    assert user_token!=""
 
 def test_no_user_login():
     user_data= {
@@ -71,7 +117,7 @@ def test_incorrect_pwd_login():
 
 
 def test_fetch_user():
-    assert user_token!=None
+    assert user_token!=""
     header = {
         "Authorization": f"Bearer {user_token}"
     }
@@ -89,7 +135,7 @@ def test_no_header_fetch_user():
 
 
 def test_bad_token_fetch_user():
-    assert user_token!=None
+    assert user_token!=""
     header = {
         "Authorization": f"Bearer BAD_TOKEN"
     }
@@ -98,7 +144,7 @@ def test_bad_token_fetch_user():
 
 
 def test_update_user():
-    assert user_token!=None
+    assert user_token!=""
     header = {
         "Authorization": f"Bearer {user_token}"
     }
@@ -110,8 +156,9 @@ def test_update_user():
 
     response = client.put("/api/v1/me", json=update_data, headers=header)
     assert response.status_code == 200
+
 def test_admin_fetch_user():
-    assert user_token!=None
+    assert user_token!=""
     header = {
         "Authorization": f"Bearer {user_token}"
     }

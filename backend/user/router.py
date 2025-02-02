@@ -26,7 +26,7 @@ def register_user(user: UserCreate, users_collection = Depends(get_collection)) 
     return {"status_code": 200}
 
 @router.post("/login", responses=core_responses)
-def login(form_data: OAuth2PasswordRequestForm = Depends(), users_collection = Depends(get_collection)):
+def login(form_data: OAuth2PasswordRequestForm = Depends(), users_collection = Depends(get_collection)) -> dict:
     return service.login(form_data, users_collection)
 
 @router.put("/me", responses=core_responses)
@@ -38,14 +38,14 @@ def fetch_user(username: CurrentLoggedInUser, users_collection = Depends(get_col
     return service.fetch_user(username, users_collection)
 
 @router.delete("/delete/{account}", responses=core_responses)
-def delete_user(account: str, users_collection = Depends(get_collection)):
+def delete_user(account: str, users_collection = Depends(get_collection)) -> dict:
     service.delete_user(account, users_collection)
     return {"status_code": 200}
 
 @router.get("/users", responses=core_responses)
-def admin_fetch_users(admin: CurrentLoggedInUser, users_collection = Depends(get_collection)):
+def admin_fetch_users(admin: CurrentLoggedInUser, users_collection = Depends(get_collection)) -> dict:
     return service.admin_fetch_users(admin, users_collection)
 
 @router.post("/update_role", responses=core_responses)
-def admin_update_user_role(admin: CurrentLoggedInUser, user: UserRoleUpdate,  users_collection = Depends(get_collection)):
+def admin_update_user_role(admin: CurrentLoggedInUser, user: UserRoleUpdate,  users_collection = Depends(get_collection))-> dict:
     return service.admin_update_user_role(admin, user, users_collection)

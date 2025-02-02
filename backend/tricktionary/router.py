@@ -1,7 +1,7 @@
 from typing import Dict
 from fastapi import APIRouter, Depends
 
-from tricktionary.schemas import TrickCreate, TrickDelete
+from tricktionary.schemas import TrickCreate
 import tricktionary.service as service
 from dependencies import get_tricktionary_collection as get_collection
 
@@ -28,6 +28,6 @@ def add_trick(trick: TrickCreate, tricks_collection = Depends(get_collection)) -
     return {"status_code": 200}
 
 @router.delete("/delete/{trick}", responses=core_responses)
-def delete_trick(trick: str, tricks_collection = Depends(get_collection)):
+def delete_trick(trick: str, tricks_collection = Depends(get_collection)) -> dict:
     service.delete_trick(trick, tricks_collection)
     return {"status_code": 200}

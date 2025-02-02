@@ -1,8 +1,6 @@
 from typing import Dict
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordRequestForm
-from pymongo import MongoClient
 
 from user.router import router as user_router
 from tricktionary.router import router as tricktionary_router

@@ -7,9 +7,16 @@ class Role(str, Enum):
     TEACHER = "teacher"
     STUDENT_BEGINNER = "student_beginner"
     STUDENT_ADVANCED = "student_advanced"
+
 class Gender(str, Enum):
     MALE = "male"
     FEMALE = "female"
+
+class Account(BaseModel):
+    account: str = ""
+    username: str = ""
+    email: str = ""
+    phone: str = ""
 
 class User(BaseModel):
     username: str

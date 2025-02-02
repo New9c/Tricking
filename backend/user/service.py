@@ -27,24 +27,22 @@ def _verify_age(age: int|None)-> bool:
 def _verify_username(username: str|None)-> bool:
     if username==None:
         return True
-    for c in username:
-        if c=='@' or c==' ':
-            return False
+    if '@' in username or ' ' in username:
+        return False
     return True
 
 def _verify_email(email: str|None)-> bool:
     if email==None:
         return True
-    for c in email:
-        if c=='@':
-            return True
+    if '@' in email:
+        return True
     return False
 
 def _verify_phone(phone: str|None)-> bool:
     if phone==None:
         return True
-    for c in phone:
-        if ord(c)>ord('9') or ord(c)<ord('0'):
+    for char in phone:
+        if not char.isdigit():
             return False
     return True
 
@@ -128,32 +126,30 @@ def delete_user(account: str, collection: Collection):
 
 
 def admin_fetch_users(account: str, collection: Collection):
-    admin =  _fetch_user(account, account, account, collection)
-    if admin==None:
+    admin = _fetch_user(account, account, account, collection)
+    if admin == None:
         raise HTTPException(status_code=404, detail="Admin Not Found")
-    elif admin["role"]!="admin":
+    elif admin["role"] != Role.ADMIN:
         raise HTTPException(status_code=403, detail="Not Admin")
-    users = collection.find({ "role": { "$ne": "admin" } })
+    users = collection.find({ "role": { "$ne": Role.ADMIN } })
     group = defaultdict(set)
     for user in users:
         group[user["role"]].add(user["username"])
     group_json = {}
-    if "teacher" in group:
-        group_json["teacher"] = group["teacher"]
-    if "student_advanced" in group:
-        group_json["student_advanced"] = group["student_advanced"]
-    if "student_beginner" in group:
-        group_json["student_beginner"] = group["student_beginner"]
+    role_order = [Role.TEACHER, Role.STUDENT_ADVANCED, Role.STUDENT_BEGINNER]
+    for role in role_order:
+        if role in group:
+            group_json[role] = group[role]
     return group_json
 
 
 def admin_update_user_role(account: str, user: UserRoleUpdate,  collection: Collection):
-    admin =  _fetch_user(account, account, account, collection)
-    if admin==None:
+    admin = _fetch_user(account, account, account, collection)
+    if admin == None:
         raise HTTPException(status_code=404, detail="Admin Not Found")
-    elif admin["role"]!="admin":
+    elif admin["role"] != Role.ADMIN:
         raise HTTPException(status_code=403, detail="Not Admin")
-    user_to_update  = collection.update_one({"username": user.username}, {"$set": {"role": user.role}})
+    user_to_update = collection.update_one({"username": user.username}, {"$set": {"role": user.role}})
     if user_to_update.modified_count == 0:
         raise HTTPException(status_code=404, detail="User Not Found")
     return {"status": 200}
