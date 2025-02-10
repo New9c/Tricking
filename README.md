@@ -2,7 +2,10 @@
 
 我之後再測試執行方法ok不ok，星期四後較有空
 module not found 就pip install, node和npm可能要查一下。
-
+## Fork (用powershell/terminal/vscode下面東東)
+```terminal
+git clone https://github.com/New9c/Tricking.git
+```
 ## Run Backend
 1. 拿jwt (用powershell/terminal/vscode下面東東)
 ```terminal
