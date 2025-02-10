@@ -36,14 +36,14 @@ db = client[dc_name]
 ```terminal
 uvicorn main:app
 ```
-去http://127.0.0.1:8000/docs#/default玩一下
+去http://127.0.0.1:8000/docs#/default 玩一下
 ## Run Frontend (要新terminal)
 在frontend裡:
 ```terminal
 npm i
 npm run dev
 ```
-去http://localhost:3000/玩一下
+去http://localhost:3000/ 玩一下
 
 -------
 ## Purpose
