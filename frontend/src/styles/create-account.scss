@@ -38,6 +38,11 @@
     font-size: 15px;
 }
 
+.account-input:disabled {
+    background-color: rgba(226, 226, 226, 0.466);
+    color: rgba(226, 226, 226, 0.466);
+}
+
 .account-input:focus {
     outline: none;
 }

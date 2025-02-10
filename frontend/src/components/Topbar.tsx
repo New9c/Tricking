@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 function Topbar() {
   const token = localStorage.getItem('access_token');
+  const googleImg = localStorage.getItem('user_img');
 
   return (
     <div className="topbar">
@@ -25,7 +26,7 @@ function Topbar() {
           ) : (
             <button className="user-btn">
               你
-              <img className="user-img" src={userImg} alt="user image" />
+              <img className="user-img" src={googleImg ? googleImg : userImg} alt="user image" />
             </button>
           )}
         </Link>

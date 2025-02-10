@@ -11,6 +11,7 @@ import UserManager from './components/UserManager';
 import Loading from './components/Loading';
 import ErrorPage from './components/Error';
 import EditMemberPage from './components/EditMemberPage';
+import GoogleLoginBtn from './components/Google';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/trick_manager" element={<TrickManager />} />
         <Route path="/loading" element={<Loading />} />
         <Route path="/error" element={<ErrorPage />} />
+        <Route path="/google" element={<GoogleLoginBtn />} />
       </Routes>
     </Router>
   );

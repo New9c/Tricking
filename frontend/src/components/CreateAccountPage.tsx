@@ -1,12 +1,14 @@
 // frontend/src/components/CreateAccountPage.tsx
 import '../styles/global.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/create-account.scss';
 import Topbar from './Topbar';
+import { jwtDecode } from 'jwt-decode';
 
 const CreateAccountPage: React.FC = () => {
   const navigate = useNavigate();
+
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -18,6 +20,16 @@ const CreateAccountPage: React.FC = () => {
     text: "",
     color: "white",
   });
+
+  const jwt = localStorage.getItem("jwt")
+  const user_info = jwt ? jwtDecode(jwt) : null;
+  useEffect(() => {
+    console.log(user_info)
+    if (user_info) {
+      setUsername(user_info.name);
+      setEmail(user_info.email);
+    }
+  }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -43,7 +55,12 @@ const CreateAccountPage: React.FC = () => {
       } else {
         // 登入失敗，顯示錯誤訊息
         const errorData = await response.json();
-        setResponseMessage({ text: errorData.detail || "An unexpected error occurred.", color: "red" });
+        setResponseMessage({
+          text: Array.isArray(errorData.detail)
+            ? errorData.detail.map((err: { msg: string }) => err.msg).join(", ")  // Extract messages from all errors
+            : errorData.detail || "An unexpected error occurred.",
+          color: "red",
+        });
       }
     } catch (error) {
       setResponseMessage({ text: "Failed to connect to the server.", color: "red" });
@@ -55,7 +72,7 @@ const CreateAccountPage: React.FC = () => {
       <Topbar />
       <div className="center-container">
         <div className="create-account-box">
-          <div className="instruction">請輸入你的資訊</div>
+          <div className="instruction">{jwt ? "請輸入剩下資訊" : "請輸入你的資訊"}</div>
           <input
             type="text"
             className="account-input"
@@ -108,6 +125,7 @@ const CreateAccountPage: React.FC = () => {
             className="account-input"
             placeholder="密碼"
             value={password}
+            disabled={jwt !== null}
             onKeyDown={handleKeyDown}
             onChange={(e) => setPassword(e.target.value)}
           />

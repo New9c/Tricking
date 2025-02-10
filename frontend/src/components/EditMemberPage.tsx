@@ -3,7 +3,7 @@ import '../styles/global.scss';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/member.scss';
-import defaultAvatar from '../assets/default-avatar.svg';
+import userImg from '../assets/default-avatar.svg';
 import cameraIcon from '../assets/camera.svg';
 import Topbar from './Topbar';
 
@@ -19,6 +19,8 @@ interface MemberData {
 
 const EditMemberPage: React.FC = () => {
   const navigate = useNavigate()
+  const token = localStorage.getItem('access_token');
+  const googleImg = localStorage.getItem('user_img');
   const [memberData, setMemberData] = useState<MemberData>({
     username: 'Loading...',
     email: 'Loading...',
@@ -32,7 +34,6 @@ const EditMemberPage: React.FC = () => {
 
   useEffect(() => {
     const fetchMemberData = async () => {
-      const token = localStorage.getItem('access_token');
       if (!token) {
         alert('請先登入');
         navigate('/login')
@@ -134,6 +135,8 @@ const EditMemberPage: React.FC = () => {
     }
     localStorage.removeItem('access_token');
     localStorage.removeItem('user_role');
+    localStorage.removeItem('user_img');
+    localStorage.removeItem('jwt');
     navigate('/login')
   };
 
@@ -145,7 +148,7 @@ const EditMemberPage: React.FC = () => {
           <div className="profile-title">個人資料</div>
           <div className="profile-section">
             <div className="profile-picture">
-              <img src={defaultAvatar} alt="User Avatar" />
+              <img src={googleImg ? googleImg : userImg} alt="User Img" />
               <button className="change-picture-btn">
                 <img src={cameraIcon} alt="Change Picture" />
               </button>
@@ -159,7 +162,7 @@ const EditMemberPage: React.FC = () => {
               name="username"
               value={memberData.username}
               onChange={handleChange}
-              readOnly={!isEditing}
+              readOnly={!isEditing || googleImg !== null}
             />
             <input
               type="email"
@@ -168,7 +171,7 @@ const EditMemberPage: React.FC = () => {
               name="email"
               value={memberData.email}
               onChange={handleChange}
-              readOnly={!isEditing}
+              readOnly={!isEditing || googleImg !== null}
             />
             <input
               type="tel"
@@ -218,7 +221,12 @@ const EditMemberPage: React.FC = () => {
               placeholder="Password"
               value="******" // 隱藏密碼
               readOnly
-              onClick={() => alert('請到其他頁面修改密碼')} // 提示修改密碼
+              onClick={() => {
+                if (googleImg === null)
+                  alert('請到其他頁面修改密碼')
+                else
+                  alert('於Google修改密碼')
+              }} // 提示修改密碼
             />
             <div className="info-role">
               <label>

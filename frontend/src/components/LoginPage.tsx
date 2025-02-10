@@ -1,8 +1,9 @@
 import '../styles/global.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/login.scss';
 import Topbar from './Topbar';
+import GoogleLoginBtn from './Google';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ const LoginPage: React.FC = () => {
       <div className="center-container">
         <div className="login-box">
           <div className="welcome-title">Welcome to NCKU Tricking</div>
+          <GoogleLoginBtn />
           <input
             type="text"
             className="account-input"

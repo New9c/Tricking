@@ -1,0 +1,17 @@
+.main-page-trick {
+    display: grid;
+    justify-content: center;
+    grid-template-rows: 20px 280px;
+    border: 5px solid red;
+    color: white;
+    height: 300px;
+    width: 200px;
+    border-radius: 5px;
+}
+
+.main-page-trick img {
+    display: block;
+    height: 280px;
+    width: 190px;
+    object-fit: cover;
+}
