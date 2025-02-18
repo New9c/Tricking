@@ -1,10 +1,10 @@
 from pymongo.collection import Collection
-from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
 from collections import defaultdict
+import user.error as Error
 
 from user.schemas import UserCreate, UserRoleUpdate, UserUpdate, UserLogin, Role
 from config import config
@@ -48,8 +48,7 @@ def _verify_phone(phone: str|None)-> bool:
 
 def _verify_params(user: UserCreate|UserUpdate):
     if not _verify_username(user.username) or not _verify_age(user.age) or not _verify_email(user.email) or not _verify_phone(user.phone):
-        raise HTTPException(status_code=401, detail="Invalid Parameters")
-
+        raise Error.INVALID_PARAMETERS
 
 def _create_access_token(data: dict) -> str:
     to_encode = data.copy()
@@ -69,7 +68,7 @@ def _fetch_user(check_username, check_email, check_phone, collection: Collection
 def fetch_user(username, collection: Collection):
     user = collection.find_one({"username": username})
     if user==None:
-        raise HTTPException(status_code=404, detail="User Not Found")
+        raise Error.USER_NOT_FOUND
     user.pop("_id")
     return user
 
@@ -82,9 +81,9 @@ def login(form_data: OAuth2PasswordRequestForm, collection: Collection):
         login_user = collection.find_one({"username": user.account, "password": ""})
 
     if login_user==None:
-        raise HTTPException(status_code=404, detail="User Not Found")
+        raise Error.USER_NOT_FOUND
     if not _verify_pwd(user.password, login_user["password"]):
-        raise HTTPException(status_code=401, detail="Password Invalid")
+        raise Error.PASSWORD_INVALID
     access_token = _create_access_token(data={"sub": login_user["username"]})
     return {"role": login_user["role"], "access_token": access_token, "token_type": "bearer"}
 
@@ -94,7 +93,7 @@ def register_user(user: UserCreate, collection: Collection):
     Fails if the username, email or phone number is taken.
     """
     if user.password!="" and _fetch_user(user.username, user.email, user.phone, collection)!=None:
-        raise HTTPException(status_code=400, detail="User Already Exists")
+        raise Error.USER_ALREADY_EXISTS
     _verify_params(user)
 
     if user.password!="":
@@ -115,7 +114,7 @@ def update_user(username:str, user: UserUpdate, collection: Collection):
     if update_data:
         user_to_update  = collection.update_one({"username": username}, {"$set": update_data})
         if user_to_update.modified_count == 0:
-            raise HTTPException(status_code=404, detail="User Not Found")
+            raise Error.USER_NOT_FOUND
         else:
             return {"status_code": 200}
     else:
@@ -125,16 +124,16 @@ def delete_user(account: str, collection: Collection):
     user_to_delete= _fetch_user(account, account, account, collection)
 
     if user_to_delete==None:
-        raise HTTPException(status_code=404, detail="User Not Found")
+        raise Error.USER_NOT_FOUND
     collection.delete_one({"username": user_to_delete["username"]})
 
 
 def admin_fetch_users(account: str, collection: Collection):
     admin = _fetch_user(account, account, account, collection)
     if admin == None:
-        raise HTTPException(status_code=404, detail="Admin Not Found")
+        raise Error.ADMIN_NOT_FOUND
     elif admin["role"] != Role.ADMIN:
-        raise HTTPException(status_code=403, detail="Not Admin")
+        raise Error.NOT_ADMIN
     users = collection.find({ "role": { "$ne": Role.ADMIN } })
     group = defaultdict(set)
     for user in users:
@@ -150,10 +149,10 @@ def admin_fetch_users(account: str, collection: Collection):
 def admin_update_user_role(account: str, user: UserRoleUpdate,  collection: Collection):
     admin = _fetch_user(account, account, account, collection)
     if admin == None:
-        raise HTTPException(status_code=404, detail="Admin Not Found")
+        raise Error.ADMIN_NOT_FOUND
     elif admin["role"] != Role.ADMIN:
-        raise HTTPException(status_code=403, detail="Not Admin")
+        raise Error.NOT_ADMIN
     user_to_update = collection.update_one({"username": user.username}, {"$set": {"role": user.role}})
     if user_to_update.modified_count == 0:
-        raise HTTPException(status_code=404, detail="User Not Found")
+        raise Error.USER_NOT_FOUND
     return {"status": 200}

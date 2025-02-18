@@ -1,7 +1,7 @@
 from pymongo.collection import Collection
-from fastapi import HTTPException
 from collections import defaultdict
 
+import tricktionary.error as Error
 from tricktionary.schemas import TrickCreate
 
 def fetch_tricks(collection: Collection):
@@ -15,12 +15,12 @@ def fetch_tricks(collection: Collection):
 def add_trick(trick: TrickCreate, collection: Collection):
     trick_to_create = collection.find_one({"name": trick.name})
     if trick_to_create!=None:
-        raise HTTPException(status_code=400, detail="Trick Already Exists")
+        raise Error.TRICK_ALREADY_EXISTS
     collection.insert_one(trick.model_dump())
 
 def delete_trick(trick: str, collection: Collection):
     trick_to_delete = collection.find_one({"name": trick})
     if trick_to_delete==None:
-        raise HTTPException(status_code=404, detail="Trick Not Found")
+        raise Error.TRICK_NOT_FOUND
     collection.delete_many({"name": trick})
 
