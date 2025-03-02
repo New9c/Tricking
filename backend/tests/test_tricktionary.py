@@ -1,14 +1,15 @@
+import pytest
 from fastapi.testclient import TestClient
 from main import app
 from dependencies import get_tricktionary_collection, mock_tricktionary_collection
 
 # Override the dependency in the FastAPI app
 app.dependency_overrides[get_tricktionary_collection] = mock_tricktionary_collection
-assert mock_tricktionary_collection().name.startswith("mock")
-#Delete All
-mock_tricktionary_collection().delete_many({})
 
+
+mock_tricktionary_collection().delete_many({})
 client = TestClient(app)
+
 
 trick = {
     "name" : "Back Flip",

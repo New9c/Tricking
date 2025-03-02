@@ -1,3 +1,4 @@
+import unittest
 from fastapi.testclient import TestClient
 from main import app
 from dependencies import get_users_collection, mock_users_collection
