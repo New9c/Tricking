@@ -1,0 +1,10 @@
+uvicorn
+fastapi
+python-jose
+pydantic_settings
+pymongo
+passlib
+python-multipart
+pytest
+httpx
+bcrypt
